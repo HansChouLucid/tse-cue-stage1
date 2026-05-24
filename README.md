@@ -49,3 +49,7 @@ After raw LibriSpeech / Libri2Mix metadata is available on a new remote instance
 ```bash
 bash scripts/rebuild_stage1_datasets.sh /data/tse_cue_project
 ```
+
+## Checkpoint Recovery Note
+
+This GitHub repository does not store `.pt`/`.ckpt` model weights. See `docs/CHECKPOINT_INVENTORY.md` for the checkpoint paths and recovery plan. If you want to resume without retraining controlled BSRNN models, store those checkpoints separately in object storage.
