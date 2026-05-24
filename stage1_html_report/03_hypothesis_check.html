@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>验证与冲突</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">Audio-only TSE Cue</div>
+    <div class="small">Stage-1 mismatch evidence report<br>2026-05-25</div>
+    <nav><a class='' href='index.html'>总览</a><a class='' href='01_research_idea.html'>研究思路</a><a class='' href='02_experiment_results.html'>主线实验</a><a class='active' href='03_hypothesis_check.html'>验证与冲突</a><a class='' href='04_uncovered_ideas.html'>未覆盖实验</a><a class='' href='05_next_plan.html'>下一步计划</a><a class='' href='06_appendix_metrics.html'>指标注释</a></nav>
+  </aside>
+  <main class="content">
+    <header class="hero">
+      <div class="eyebrow">阶段性研究报告</div>
+      <h1>验证与冲突</h1>
+      <p>哪些研究假设被支持，哪些观察要求我们修正原始表述。</p>
+    </header>
+    <section><h2>研究思路如何被验证</h2><table class=''><thead><tr><th>研究思路 / 假设</th><th>对应实验</th><th>主要结果</th><th>结论</th></tr></thead><tbody><tr><td>fine-grained cue 会发生 local mismatch</td><td>pretrained USEF + BSRNN full diagnostics</td><td>similar-speaker 有 identity mismatch；v2 TTS 有 content mismatch。</td><td>支持。</td></tr><tr><td>mismatch 是局部、有限、tail-focused</td><td>chunk-level ECAPA/SSL + per-utterance case attribution</td><td>median mismatch 常为 0，失败集中在部分样本和局部 chunk。</td><td>支持。</td></tr><tr><td>similar-speaker 与 similar-content 触发不同 mismatch</td><td>similar-speaker vs v2 TTS</td><td>speaker stress 主要暴露 identity drift；v2 TTS 主要暴露 content drift。</td><td>支持，并且需要条件感知 taxonomy。</td></tr><tr><td>不同 fine-grained cue 的可靠性不同</td><td>controlled BSRNN TFMap/Context/USEF</td><td>USEF content mismatch 0.083，Context 0.298。</td><td>强支持。</td></tr><tr><td>global/SV verifier 可用于检测</td><td>ECAPA/SpeechBrain/SSL sanity 与 case study</td><td>多 verifier + waveform 能解释更可靠的 mismatch。</td><td>部分支持，solution 阶段尚未验证缓解。</td></tr></tbody></table></section><section><h2>与原始假设存在张力或冲突的地方</h2><table class=''><thead><tr><th>冲突 / 张力</th><th>实验观察</th><th>含义</th></tr></thead><tbody><tr><td>hard condition 不一定降低平均 SI-SNRi</td><td>pretrained USEF 在 similar-speaker 和 v1 上平均 SI-SNRi 与 normal/easy 接近。</td><td>第一阶段论点不能写成“平均性能显著下降”，而应写成 tail/local mismatch。</td></tr><tr><td>v2 TTS 的 speaker-side mismatch 没有爆发</td><td>v2 speaker mismatch 低于 similar-speaker。</td><td>v2 的核心不是 speaker identity collapse，而是 content attribution stress。</td></tr><tr><td>ASR 不能单独证明 target/interferer attribution</td><td>v2 synthetic interferer 使用 target text。</td><td>ASR 是 readable evidence，不是 attribution oracle；核心仍是 SSL content + waveform。</td></tr><tr><td>BSRNN baseline 较弱</td><td>train-100 / 5 epoch BSRNN SI-SNRi 明显低于 pretrained USEF。</td><td>BSRNN 适合作 cue mechanism comparison，不适合作最终强性能比较。</td></tr><tr><td>USEF speaker-side 指标并非全方位最优</td><td>BSRNN v2 中 USEF speaker_mismatch_mean 不低。</td><td>USEF 的优势主要体现在更少进入 content collapse 和更高整体稳定性，而不是每个局部 speaker 指标都最好。</td></tr></tbody></table></section><section><h2>当前可写成论文式表述的结论</h2><pre><code>1. Fine-grained cue TSE 的 hard-condition failure 具有局部性和条件依赖性。
+2. Similar-speaker 主要暴露 speaker identity mismatch；similar-content v2 TTS 主要暴露 content attribution mismatch。
+3. 强 pretrained USEF 也存在 tail/local mismatch，因此问题不是弱 baseline artifact。
+4. Controlled BSRNN 说明 cue mechanism 会系统性影响 mismatch，USEF 比 TFMap/Context 更稳定。
+5. v2 TTS 的 content mismatch 可由 SSL content gap 量化，并可由 ASR/token-level evidence 佐证输出文本崩坏或恢复。</code></pre></section>
+  </main>
+</body>
+</html>

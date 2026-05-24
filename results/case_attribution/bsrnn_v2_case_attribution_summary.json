@@ -1,0 +1,227 @@
+{
+  "tfmap": {
+    "n": 5980,
+    "sisnr_i": {
+      "n": 5980,
+      "mean": 4.59727319106,
+      "median": 5.377275685712808,
+      "p10": -0.4414043519586208,
+      "p90": 8.9208691613934,
+      "min": -17.58183070271245,
+      "max": 15.74340184206866
+    },
+    "content_mismatch_rate": {
+      "n": 5980,
+      "mean": 0.28267508274459546,
+      "median": 0.16666666666666666,
+      "p10": 0.0,
+      "p90": 0.7777777777777778,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "joint_content_waveform_rate": {
+      "n": 5980,
+      "mean": 0.10302198314111909,
+      "median": 0.0,
+      "p10": 0.0,
+      "p90": 0.4093582887700545,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "speaker_mismatch_rate_1s": {
+      "n": 5980,
+      "mean": 0.10973823259604602,
+      "median": 0.0,
+      "p10": 0.0,
+      "p90": 0.375,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "cause_counts": {
+      "ambiguous_or_mild_local_error": 2042,
+      "stable_success": 1858,
+      "confirmed_content_drift": 879,
+      "mixed_content_and_speaker_drift": 486,
+      "content_embedding_only_without_waveform_support": 471,
+      "speaker_drift_or_identity_instability": 181,
+      "ordinary_separation_failure_or_unattributed": 63
+    },
+    "absolute_failure_lt0": {
+      "n": 726,
+      "content_mismatch_rate": {
+        "n": 726,
+        "mean": 0.6974321938039179,
+        "median": 0.75,
+        "p10": 0.3333333333333333,
+        "p90": 1.0,
+        "min": 0.0,
+        "max": 1.0
+      },
+      "cause_counts": {
+        "confirmed_content_drift": 420,
+        "mixed_content_and_speaker_drift": 230,
+        "ordinary_separation_failure_or_unattributed": 63,
+        "content_embedding_only_without_waveform_support": 8,
+        "speaker_drift_or_identity_instability": 5,
+        "ambiguous_or_mild_local_error": 0,
+        "stable_success": 0
+      }
+    },
+    "rates": {
+      "content_rate_gt_0p2": 0.4561872909698997,
+      "content_rate_gt_0p5": 0.23812709030100335,
+      "joint_rate_gt_0p1": 0.24331103678929766,
+      "speaker_rate_gt_0p3": 0.13762541806020068
+    }
+  },
+  "context": {
+    "n": 5980,
+    "sisnr_i": {
+      "n": 5980,
+      "mean": 4.5475212162942755,
+      "median": 5.48334827195392,
+      "p10": -1.4646392136025015,
+      "p90": 9.795651153572821,
+      "min": -24.43566689292254,
+      "max": 16.78571997391472
+    },
+    "content_mismatch_rate": {
+      "n": 5980,
+      "mean": 0.29754604421010733,
+      "median": 0.18181818181818182,
+      "p10": 0.0,
+      "p90": 0.8,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "joint_content_waveform_rate": {
+      "n": 5980,
+      "mean": 0.12164828306637186,
+      "median": 0.0,
+      "p10": 0.0,
+      "p90": 0.5,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "speaker_mismatch_rate_1s": {
+      "n": 5980,
+      "mean": 0.11372624292515733,
+      "median": 0.0,
+      "p10": 0.0,
+      "p90": 0.4,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "cause_counts": {
+      "stable_success": 1920,
+      "ambiguous_or_mild_local_error": 1808,
+      "confirmed_content_drift": 1015,
+      "mixed_content_and_speaker_drift": 533,
+      "content_embedding_only_without_waveform_support": 428,
+      "speaker_drift_or_identity_instability": 210,
+      "ordinary_separation_failure_or_unattributed": 66
+    },
+    "absolute_failure_lt0": {
+      "n": 954,
+      "content_mismatch_rate": {
+        "n": 954,
+        "mean": 0.7059792310404129,
+        "median": 0.75,
+        "p10": 0.36363636363636365,
+        "p90": 1.0,
+        "min": 0.0,
+        "max": 1.0
+      },
+      "cause_counts": {
+        "confirmed_content_drift": 574,
+        "mixed_content_and_speaker_drift": 301,
+        "ordinary_separation_failure_or_unattributed": 66,
+        "content_embedding_only_without_waveform_support": 10,
+        "speaker_drift_or_identity_instability": 3,
+        "ambiguous_or_mild_local_error": 0,
+        "stable_success": 0
+      }
+    },
+    "rates": {
+      "content_rate_gt_0p2": 0.47525083612040137,
+      "content_rate_gt_0p5": 0.26521739130434785,
+      "joint_rate_gt_0p1": 0.2690635451505017,
+      "speaker_rate_gt_0p3": 0.144314381270903
+    }
+  },
+  "usef": {
+    "n": 5980,
+    "sisnr_i": {
+      "n": 5980,
+      "mean": 8.123816153669628,
+      "median": 9.132446645081071,
+      "p10": 3.9082284593787926,
+      "p90": 11.855676811712792,
+      "min": -23.452086604334216,
+      "max": 17.00389949964924
+    },
+    "content_mismatch_rate": {
+      "n": 5980,
+      "mean": 0.082697797869275,
+      "median": 0.0,
+      "p10": 0.0,
+      "p90": 0.25,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "joint_content_waveform_rate": {
+      "n": 5980,
+      "mean": 0.0357606374732802,
+      "median": 0.0,
+      "p10": 0.0,
+      "p90": 0.0,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "speaker_mismatch_rate_1s": {
+      "n": 5980,
+      "mean": 0.14224742558988052,
+      "median": 0.0,
+      "p10": 0.0,
+      "p90": 0.5454545454545454,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "cause_counts": {
+      "ambiguous_or_mild_local_error": 2648,
+      "stable_success": 2277,
+      "speaker_drift_or_identity_instability": 632,
+      "confirmed_content_drift": 259,
+      "mixed_content_and_speaker_drift": 83,
+      "content_embedding_only_without_waveform_support": 59,
+      "ordinary_separation_failure_or_unattributed": 22
+    },
+    "absolute_failure_lt0": {
+      "n": 310,
+      "content_mismatch_rate": {
+        "n": 310,
+        "mean": 0.7181847157394988,
+        "median": 0.8,
+        "p10": 0.2704545454545455,
+        "p90": 1.0,
+        "min": 0.0,
+        "max": 1.0
+      },
+      "cause_counts": {
+        "confirmed_content_drift": 214,
+        "mixed_content_and_speaker_drift": 58,
+        "ordinary_separation_failure_or_unattributed": 22,
+        "speaker_drift_or_identity_instability": 12,
+        "content_embedding_only_without_waveform_support": 4,
+        "ambiguous_or_mild_local_error": 0,
+        "stable_success": 0
+      }
+    },
+    "rates": {
+      "content_rate_gt_0p2": 0.11872909698996656,
+      "content_rate_gt_0p5": 0.05301003344481605,
+      "joint_rate_gt_0p1": 0.06254180602006688,
+      "speaker_rate_gt_0p3": 0.17709030100334447
+    }
+  }
+}

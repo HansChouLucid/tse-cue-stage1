@@ -1,0 +1,9 @@
+*.wav
+*.flac
+*.pt
+*.pth
+*.tar
+*.tar.gz
+*.zip
+__pycache__/
+.DS_Store

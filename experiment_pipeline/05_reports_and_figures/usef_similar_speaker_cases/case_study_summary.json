@@ -1,0 +1,11 @@
+{
+  "num_cases": 25,
+  "per_category": 5,
+  "chunk_sec": 1.0,
+  "outputs": {
+    "case_manifest": "/data/tse_cue_project/experiments/fine_grained_cue/usef_tse_tfgridnet/similar_speaker_test_full/usef_tfgridnet_wsj0_2mix/case_study_report/case_manifest.csv",
+    "global_identity_checklist": "/data/tse_cue_project/experiments/fine_grained_cue/usef_tse_tfgridnet/similar_speaker_test_full/usef_tfgridnet_wsj0_2mix/case_study_report/global_identity_disagreement_checklist.csv",
+    "timelines": "/data/tse_cue_project/experiments/fine_grained_cue/usef_tse_tfgridnet/similar_speaker_test_full/usef_tfgridnet_wsj0_2mix/case_study_report/timelines",
+    "figures": "/data/tse_cue_project/experiments/fine_grained_cue/usef_tse_tfgridnet/similar_speaker_test_full/usef_tfgridnet_wsj0_2mix/case_study_report/figures"
+  }
+}

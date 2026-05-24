@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>下一步研究计划</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">Audio-only TSE Cue</div>
+    <div class="small">Stage-1 mismatch evidence report<br>2026-05-25</div>
+    <nav><a class='' href='index.html'>总览</a><a class='' href='01_research_idea.html'>研究思路</a><a class='' href='02_experiment_results.html'>主线实验</a><a class='' href='03_hypothesis_check.html'>验证与冲突</a><a class='' href='04_uncovered_ideas.html'>未覆盖实验</a><a class='active' href='05_next_plan.html'>下一步计划</a><a class='' href='06_appendix_metrics.html'>指标注释</a></nav>
+  </aside>
+  <main class="content">
+    <header class="hero">
+      <div class="eyebrow">阶段性研究报告</div>
+      <h1>下一步研究计划</h1>
+      <p>从第一阶段诊断进入第二阶段 mismatch solution。</p>
+    </header>
+    <section><h2>建议进入第二阶段：Mismatch Solution</h2><table class=''><thead><tr><th>任务</th><th>做法</th><th>成功判据</th></tr></thead><tbody><tr><td>Mismatch-aware detector</td><td>使用 ECAPA/SpeechBrain/SSL content gap/local waveform/activity score 形成 chunk-level risk score。</td><td>在 held-out hard condition 上能预测 high mismatch chunks。</td></tr><tr><td>Verifier-guided local loss</td><td>对高风险 chunk 施加 identity/content consistency 或 hard negative margin。</td><td>降低 mismatch rate，同时 SI-SNRi 不明显下降。</td></tr><tr><td>Cue reliability gate</td><td>在 fine-grained matching 或 fusion 处加入 confidence/gating。</td><td>hard condition 下少跟错，normal condition 不退化。</td></tr><tr><td>Case-level evaluation</td><td>沿用当前 taxonomy 和 ASR evidence。</td><td>solution 能减少 confirmed content drift / mixed drift。</td></tr></tbody></table></section><section><h2>Baseline 增强建议</h2><table class=''><thead><tr><th>路线</th><th>建议</th><th>理由</th></tr></thead><tbody><tr><td>短期</td><td>保留 pretrained USEF + current BSRNN 作为诊断基线。</td><td>已经足够支撑进入 solution。</td></tr><tr><td>中期</td><td>训练 train-360/train-460 BSRNN single-cue。</td><td>验证 cue 差异随模型增强是否仍存在。</td></tr><tr><td>强模型路线</td><td>若能接入官方/公开 TFMap/Context checkpoint，则优先做 inference diagnostic。</td><td>比从零训练更适合快速验证强模型行为。</td></tr><tr><td>不建议</td><td>在没有 solution prototype 前无限扩大 baseline。</td><td>会拖慢主线，且第一阶段问题已经基本证明。</td></tr></tbody></table></section><section><h2>推荐执行顺序</h2><pre><code>Step 1: 定义 risk score：speaker risk + content risk + waveform support + activity gate。
+Step 2: 在现有 outputs 上做 offline detector AUC / precision-recall。
+Step 3: 设计训练期 local reweighting / hard negative margin。
+Step 4: 用 BSRNN controlled setting 快速验证 solution 是否降低 mismatch。
+Step 5: 用 pretrained USEF 线做强模型 reference 和 case-level 对照。
+Step 6: 视结果决定是否扩大 train-360/train-460 baseline。</code></pre></section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,5 @@
+name,n,longest_mv_true_swap_run_mean,first_mv_true_swap_sec_median,mean_inter_minus_target_db,mean_inter_minus_target_db_on_true_swap
+waveform_global_failure,323,2.9473684210526314,0.0,0.0016280288227282762,0.10286620647584238
+confirmed_true_swap_any,274,3.5693430656934306,0.0,-0.03936254881329225,0.19936575981842652
+confirmed_true_swap_rate_gt_0.2,222,4.157657657657658,0.0,0.022232677631130276,0.09930310278699794
+single_ecapa_only_any,3309,0.0,,0.04486566117477731,

@@ -1,0 +1,110 @@
+dataloader_args:
+  batch_size: 4
+  drop_last: false
+  num_workers: 2
+  pin_memory: true
+dataset_args:
+  resample_rate: 16000
+  sample_num_per_epoch: 64
+  shuffle: true
+  shuffle_args:
+    shuffle_size: 64
+  chunk_len: 32000
+  noise_prob: 0
+  noise_lmdb_file: ./data/musan/lmdb
+  cues:
+    audio:
+      use: true
+      required: true
+  cue_processing:
+    audio:
+      reverb_enroll_prob: 0
+      noise_enroll_prob: 0
+enable_amp: false
+exp_dir: /data/tse_cue_project/experiments/context_fix_batchcheck/context_ddp2_ampoff_lr1e4_b4
+gpus: '01'
+log_batch_interval: 1
+loss: SISDR
+loss_args: {}
+model:
+  tse_model: TSE_BSRNN_SPK
+model_args:
+  tse_model:
+    separator:
+      sr: 16000
+      win: 512
+      stride: 128
+      feature_dim: 128
+      num_repeat: 6
+      causal: false
+      nspk: 1
+    speaker:
+      features:
+        listen:
+          enabled: false
+          glue: 512
+        usef:
+          enabled: false
+          spec_dim: 2
+          approx_qk_dim: 512
+          n_head: 4
+          t_ksize: 3
+        tfmap:
+          enabled: false
+          type: spec
+        context:
+          enabled: true
+          speaker_model: null
+          embed_dim: 512
+          atten_dim: 128
+          num_heads: 2
+          fusion: multiply
+        spkemb:
+          enabled: false
+          speaker_model: null
+          fusion: multiply
+      speaker_model:
+        fbank:
+          num_mel_bins: 80
+          frame_shift: 10
+          frame_length: 25
+          dither: 1.0
+          sample_rate: 16000
+        speaker_encoder:
+          model: ECAPA_TDNN_GLOB_c512
+          pretrained: ./wespeaker_models/voxceleb_ECAPA512/avg_model.pt
+          spk_args:
+            embed_dim: 192
+            feat_dim: 80
+            pooling_func: ASTP
+model_init:
+  tse_model: null
+  discriminator: null
+  spk_model: null
+num_avg: 10
+num_epochs: 1
+optimizer:
+  tse_model: Adam
+optimizer_args:
+  tse_model:
+    lr: 0.0001
+    weight_decay: 0.0001
+clip_grad: 1.0
+save_epoch_interval: 1
+scheduler:
+  tse_model: ExponentialDecrease
+scheduler_args:
+  tse_model:
+    final_lr: 5.0e-06
+    initial_lr: 0.0001
+    warm_from_zero: false
+    warm_up_epoch: 0
+seed: 42
+train_data: /data/tse_cue_project/manifests/smoke_32/train-100/raw.list
+train_samples: /data/tse_cue_project/manifests/smoke_32/train-100/samples.jsonl
+train_cues: /data/tse_cue_project/manifests/smoke_32/train-100/cues.yaml
+val_data: /data/tse_cue_project/manifests/smoke_32/dev/raw.list
+val_samples: /data/tse_cue_project/manifests/smoke_32/dev/samples.jsonl
+val_cues: /data/tse_cue_project/manifests/smoke_32/dev/cues.yaml
+data_type: raw
+repeat_dataset: true

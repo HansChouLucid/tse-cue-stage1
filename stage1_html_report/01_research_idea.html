@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>研究思路回顾</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">Audio-only TSE Cue</div>
+    <div class="small">Stage-1 mismatch evidence report<br>2026-05-25</div>
+    <nav><a class='' href='index.html'>总览</a><a class='active' href='01_research_idea.html'>研究思路</a><a class='' href='02_experiment_results.html'>主线实验</a><a class='' href='03_hypothesis_check.html'>验证与冲突</a><a class='' href='04_uncovered_ideas.html'>未覆盖实验</a><a class='' href='05_next_plan.html'>下一步计划</a><a class='' href='06_appendix_metrics.html'>指标注释</a></nav>
+  </aside>
+  <main class="content">
+    <header class="hero">
+      <div class="eyebrow">阶段性研究报告</div>
+      <h1>研究思路回顾</h1>
+      <p>回到 toolkit 中的原始问题设定，说明当前实验对应哪一部分。</p>
+    </header>
+    <section><h2>Toolkit 原始研究主线</h2>
+<p>原始 toolkit 的核心不是简单比较“哪种 cue 平均 SI-SDR 更高”，而是重新划分 cue 的角色：</p>
+<table class=''><thead><tr><th>角色</th><th>原始设想</th><th>原因</th></tr></thead><tbody><tr><td>Fine-grained cue</td><td>作为 separation 主体</td><td>保留 reference 的局部发音、谱结构、上下文和 target-related local evidence。</td></tr><tr><td>Global cue / SV embedding</td><td>作为 independent verifier</td><td>提供稳定 speaker identity anchor，用于检测 fine-grained cue 的局部错配。</td></tr><tr><td>Mismatch controller</td><td>第二阶段 solution 模块</td><td>当 verifier / matching / activity 信号显示局部风险时，进行局部约束或修复。</td></tr></tbody></table><div class='note'>核心转向：从“更多 cue 是否提升平均指标”转向“fine-grained cue 在什么条件下会局部失效，以及 global verifier 如何检测和缓解”。</div></section><section><h2>原始核心假设</h2><table class=''><thead><tr><th>假设</th><th>内容</th><th>当前状态</th></tr></thead><tbody><tr><td>H1 Fine-grained 主体优势</td><td>fine-grained cue 保留局部状态和上下文，适合作 separation 主体。</td><td>部分支持，但当前 controlled BSRNN 是弱 baseline，尚未完整证明其优于 global cue。</td></tr><tr><td>H2 Local mismatch 风险</td><td>similar speaker/content 条件下，fine-grained cue 可能被局部相似性误导。</td><td>强支持，已有 speaker-side 和 content-side mismatch 证据。</td></tr><tr><td>H3 Global verifier 有效</td><td>预训练 SV embedding 或 prototype 适合作独立 verifier。</td><td>部分支持，ECAPA/SpeechBrain 已能解释 speaker mismatch；后续还需 verifier-guided solution。</td></tr><tr><td>H4 TSE-joint embedding 可能退化</td><td>联合训练 embedding 可能失去 speaker verification 判别性。</td><td>尚未覆盖，需要后续对照实验。</td></tr></tbody></table></section><section><h2>第一阶段与第二阶段的分工</h2><table class=''><thead><tr><th>阶段</th><th>目标</th><th>当前进展</th></tr></thead><tbody><tr><td>第一阶段：failure-mode analysis</td><td>证明 local mismatch 存在、触发条件、可检测性。</td><td>基本完成。</td></tr><tr><td>第二阶段：global verifier-guided solution</td><td>用 global verifier 检测、约束或修复 fine-grained cue mismatch。</td><td>尚未开始，是下一阶段主线。</td></tr></tbody></table></section>
+  </main>
+</body>
+</html>

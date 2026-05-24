@@ -1,0 +1,59 @@
+{
+  "num_utterances": 20,
+  "num_chunks": 210,
+  "content_gap": {
+    "n": 210,
+    "mean": 0.12057287620896724,
+    "median": 0.15705122267271215,
+    "p10": -0.09865344022657963,
+    "p25": 0.030770944164399072,
+    "p75": 0.22888721094647588,
+    "p90": 0.2853451314123906,
+    "min": -0.3717759473895268,
+    "max": 0.410859457381871
+  },
+  "content_mismatch_rate_utterance": {
+    "n": 20,
+    "mean": 0.15261779886779886,
+    "median": 0.08391608391608392,
+    "p10": 0.0,
+    "p25": 0.0,
+    "p75": 0.21250000000000002,
+    "p90": 0.36666666666666714,
+    "min": 0.0,
+    "max": 0.6666666666666666
+  },
+  "waveform_interferer_rate_utterance": {
+    "n": 20,
+    "mean": 0.024583333333333332,
+    "median": 0.0,
+    "p10": 0.0,
+    "p25": 0.0,
+    "p75": 0.0,
+    "p90": 0.09500000000000017,
+    "min": 0.0,
+    "max": 0.20833333333333334
+  },
+  "joint_content_waveform_rate_utterance": {
+    "n": 20,
+    "mean": 0.020416666666666666,
+    "median": 0.0,
+    "p10": 0.0,
+    "p25": 0.0,
+    "p75": 0.0,
+    "p90": 0.020000000000000285,
+    "min": 0.0,
+    "max": 0.20833333333333334
+  },
+  "utterance_any_content_mismatch": 0.55,
+  "utterance_content_rate_gt_0p1": 0.45,
+  "utterance_content_rate_gt_0p2": 0.25,
+  "utterance_any_joint": 0.1,
+  "utterance_joint_rate_gt_0p1": 0.1,
+  "low_sisnri_content_rate": {
+    "n": 0
+  },
+  "good_sisnri_content_rate": {
+    "n": 0
+  }
+}

@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>指标与路径注释</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">Audio-only TSE Cue</div>
+    <div class="small">Stage-1 mismatch evidence report<br>2026-05-25</div>
+    <nav><a class='' href='index.html'>总览</a><a class='' href='01_research_idea.html'>研究思路</a><a class='' href='02_experiment_results.html'>主线实验</a><a class='' href='03_hypothesis_check.html'>验证与冲突</a><a class='' href='04_uncovered_ideas.html'>未覆盖实验</a><a class='' href='05_next_plan.html'>下一步计划</a><a class='active' href='06_appendix_metrics.html'>指标注释</a></nav>
+  </aside>
+  <main class="content">
+    <header class="hero">
+      <div class="eyebrow">阶段性研究报告</div>
+      <h1>指标与路径注释</h1>
+      <p>解释报告中所有核心指标和文件位置。</p>
+    </header>
+    <section><h2>关键指标注释</h2><table class=''><thead><tr><th>指标</th><th>计算/含义</th><th>如何解释</th></tr></thead><tbody><tr><td>SI-SNRi</td><td>est 相对 mixture 的 SI-SNR 改善。</td><td>整体分离质量；不能单独说明是否抽对人。</td></tr><tr><td>speaker_gap</td><td>sim(output chunk, target speaker prototype) - sim(output chunk, interferer prototype)。</td><td>负值表示 speaker verifier 更偏 interferer。</td></tr><tr><td>speaker mismatch rate</td><td>speaker_gap &lt; 0 的有效 chunk 比例。</td><td>衡量 local speaker identity drift。</td></tr><tr><td>local SI-SDR gap</td><td>SI-SDR(output, target chunk) - SI-SDR(output, interferer chunk)。</td><td>负值表示 waveform 层面更接近 interferer。</td></tr><tr><td>content_gap</td><td>sim(output, target content) - sim(output, interferer content)，使用 wav2vec2-base 中间层。</td><td>负值表示 content embedding 更接近 interferer reference。</td></tr><tr><td>content mismatch rate</td><td>content_gap &lt; 0 的 chunk 比例。</td><td>衡量局部 content attribution drift。</td></tr><tr><td>joint content+waveform rate</td><td>content mismatch 且 waveform 更接近 interferer 的 chunk 比例。</td><td>比 content-only 更强的 content drift 证据。</td></tr><tr><td>WER / token F1</td><td>ASR 输出与 target transcript 的词错误率和 token overlap。</td><td>用于 readable evidence；v2 中不能单独区分 target/interferer attribution。</td></tr></tbody></table></section><section><h2>主要文件路径</h2><table class=''><thead><tr><th>内容</th><th>路径</th></tr></thead><tbody><tr><td>本地 pipeline</td><td>E:\TSE\audio-only TSE cue\experiment_pipeline</td></tr><tr><td>统一证据链</td><td>experiment_pipeline\00_overview\03_unified_evidence_chain.md</td></tr><tr><td>BSRNN v2 case attribution</td><td>experiment_pipeline\05_reports_and_figures\bsrnn_v2_tts_case_attribution\README.md</td></tr><tr><td>远端 BSRNN v2 report</td><td>/data/tse_cue_project/experiments/normal_basic_single_cue_reports/bsrnn_v2_tts_case_attribution/</td></tr><tr><td>远端 controlled SSL diagnostic</td><td>/data/tse_cue_project/experiments/normal_basic_single_cue_content_diagnostic/similar_content_v2_tts/</td></tr></tbody></table></section>
+  </main>
+</body>
+</html>

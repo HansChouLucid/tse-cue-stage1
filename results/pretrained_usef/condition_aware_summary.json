@@ -1,0 +1,213 @@
+{
+  "reference_distribution": {
+    "similar_speaker": {
+      "p10": 10.992472225523958,
+      "median": 18.491478765117186,
+      "p75": 20.64248151413053,
+      "n": 6000
+    },
+    "similar_content": {
+      "p10": 13.531906798485462,
+      "median": 18.810888231707366,
+      "p75": 20.863316867223904,
+      "n": 5989
+    }
+  },
+  "summary": {
+    "similar_content": {
+      "n": 5989,
+      "sisnr_i": {
+        "n": 5989,
+        "mean": 16.837342849466232,
+        "median": 18.810888231707366,
+        "p05": 6.897851170863854,
+        "p10": 13.531906798485462,
+        "p25": 16.600260096824133,
+        "p75": 20.863316867223904,
+        "p90": 22.411298980777683,
+        "min": -81.64512325491748,
+        "max": 27.50404590555907
+      },
+      "relative_bands": {
+        "below_median": 2395,
+        "strong_upper_quartile": 1498,
+        "normal_mid": 1497,
+        "relative_tail_le_p10": 347,
+        "absolute_failure_lt0": 215,
+        "absolute_weak_0_5": 37
+      },
+      "failure_causes": {
+        "no_confirmed_mismatch": 4061,
+        "speaker_verifier_instability": 1596,
+        "mismatch_explained_extreme_failure": 220,
+        "content_only_unconfirmed_by_waveform": 81,
+        "non_mismatch_or_unconfirmed_failure": 24,
+        "confirmed_local_content_mismatch": 7
+      },
+      "absolute_failure_lt0": {
+        "n": 215,
+        "cause_counts": {
+          "mismatch_explained_extreme_failure": 207,
+          "content_only_unconfirmed_by_waveform": 4,
+          "non_mismatch_or_unconfirmed_failure": 4
+        },
+        "primary_mismatch_rate": {
+          "n": 215,
+          "mean": 0.8604750855603892,
+          "median": 1.0,
+          "p05": 0.14285714285714285,
+          "p10": 0.3333333333333333,
+          "p25": 0.9258241758241759,
+          "p75": 1.0,
+          "p90": 1.0,
+          "min": 0.0,
+          "max": 1.0
+        }
+      },
+      "weak_or_failed_lt5": {
+        "n": 252,
+        "cause_counts": {
+          "mismatch_explained_extreme_failure": 220,
+          "non_mismatch_or_unconfirmed_failure": 24,
+          "content_only_unconfirmed_by_waveform": 8
+        },
+        "primary_mismatch_rate": {
+          "n": 252,
+          "mean": 0.7458581915658912,
+          "median": 1.0,
+          "p05": 0.0,
+          "p10": 0.08333333333333333,
+          "p25": 0.3694852941176471,
+          "p75": 1.0,
+          "p90": 1.0,
+          "min": 0.0,
+          "max": 1.0
+        }
+      },
+      "relative_tail_le_p10": {
+        "n": 599,
+        "cause_counts": {
+          "mismatch_explained_extreme_failure": 220,
+          "no_confirmed_mismatch": 219,
+          "speaker_verifier_instability": 116,
+          "non_mismatch_or_unconfirmed_failure": 24,
+          "content_only_unconfirmed_by_waveform": 13,
+          "confirmed_local_content_mismatch": 7
+        },
+        "primary_mismatch_rate": {
+          "n": 599,
+          "mean": 0.31573110340779836,
+          "median": 0.0,
+          "p05": 0.0,
+          "p10": 0.0,
+          "p25": 0.0,
+          "p75": 0.9523809523809523,
+          "p90": 1.0,
+          "min": 0.0,
+          "max": 1.0
+        }
+      }
+    },
+    "similar_speaker": {
+      "n": 6000,
+      "sisnr_i": {
+        "n": 6000,
+        "mean": 15.86240445402421,
+        "median": 18.491478765117186,
+        "p05": -2.1446832727401652,
+        "p10": 10.992472225523958,
+        "p25": 16.119632590360254,
+        "p75": 20.64248151413053,
+        "p90": 22.165203005214124,
+        "min": -115.38809656224366,
+        "max": 26.666437753805347
+      },
+      "relative_bands": {
+        "below_median": 2400,
+        "normal_mid": 1500,
+        "strong_upper_quartile": 1500,
+        "absolute_failure_lt0": 323,
+        "relative_tail_le_p10": 196,
+        "absolute_weak_0_5": 81
+      },
+      "failure_causes": {
+        "no_confirmed_mismatch": 2453,
+        "single_verifier_instability": 1976,
+        "identity_disagreement_without_waveform_swap": 1175,
+        "mismatch_explained_extreme_failure": 271,
+        "non_mismatch_or_unconfirmed_failure": 122,
+        "confirmed_local_identity_mismatch": 3
+      },
+      "absolute_failure_lt0": {
+        "n": 323,
+        "cause_counts": {
+          "mismatch_explained_extreme_failure": 255,
+          "non_mismatch_or_unconfirmed_failure": 66,
+          "identity_disagreement_without_waveform_swap": 2
+        },
+        "primary_mismatch_rate": {
+          "n": 323,
+          "mean": 0.45078266066126577,
+          "median": 0.5,
+          "p05": 0.0,
+          "p10": 0.0,
+          "p25": 0.14285714285714285,
+          "p75": 0.7416666666666667,
+          "p90": 0.8977777777777779,
+          "min": 0.0,
+          "max": 1.0
+        }
+      },
+      "weak_or_failed_lt5": {
+        "n": 404,
+        "cause_counts": {
+          "mismatch_explained_extreme_failure": 271,
+          "non_mismatch_or_unconfirmed_failure": 122,
+          "identity_disagreement_without_waveform_swap": 11
+        },
+        "primary_mismatch_rate": {
+          "n": 404,
+          "mean": 0.3679245512752548,
+          "median": 0.32456140350877194,
+          "p05": 0.0,
+          "p10": 0.0,
+          "p25": 0.0,
+          "p75": 0.6666666666666666,
+          "p90": 0.8571428571428571,
+          "min": 0.0,
+          "max": 1.0
+        }
+      },
+      "relative_tail_le_p10": {
+        "n": 600,
+        "cause_counts": {
+          "mismatch_explained_extreme_failure": 271,
+          "non_mismatch_or_unconfirmed_failure": 122,
+          "no_confirmed_mismatch": 82,
+          "single_verifier_instability": 74,
+          "identity_disagreement_without_waveform_swap": 48,
+          "confirmed_local_identity_mismatch": 3
+        },
+        "primary_mismatch_rate": {
+          "n": 600,
+          "mean": 0.24821088786800857,
+          "median": 0.0,
+          "p05": 0.0,
+          "p10": 0.0,
+          "p25": 0.0,
+          "p75": 0.5,
+          "p90": 0.8,
+          "min": 0.0,
+          "max": 1.0
+        }
+      }
+    }
+  },
+  "interpretation": {
+    "primary_mismatch_rate": {
+      "similar_speaker": "multi-verifier true-swap rate using ECAPA + SpeechBrain + waveform preference",
+      "similar_content": "joint SSL content mismatch + waveform-interferer rate"
+    },
+    "relative_tail": "SI-SNRi <= condition p10, plus absolute failure/weak bands"
+  }
+}
