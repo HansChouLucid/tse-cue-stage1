@@ -35,3 +35,17 @@ For a full second-stage run, rebuild or re-download the large datasets on the re
 ## Stage-1 Conclusion
 
 The current evidence supports that fine-grained cue TSE can produce local, finite, diagnosable target/interferer mismatch under hard conditions. Similar-speaker mainly exposes speaker identity mismatch; similar-content v2 TTS mainly exposes content attribution mismatch. Controlled BSRNN comparison shows USEF is more stable than TFMap/Context in the current setup.
+
+## Dataset Reconstruction
+
+Large constructed datasets are not stored here. The reconstruction plan and scripts are included instead:
+
+- `docs/DATA_RECONSTRUCTION.md`
+- `dataset_build_tools/`
+- `scripts/rebuild_stage1_datasets.sh`
+
+After raw LibriSpeech / Libri2Mix metadata is available on a new remote instance, run:
+
+```bash
+bash scripts/rebuild_stage1_datasets.sh /data/tse_cue_project
+```
