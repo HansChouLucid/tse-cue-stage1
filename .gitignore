@@ -1,9 +1,31 @@
+# Large artifacts
 *.wav
 *.flac
 *.pt
 *.pth
+*.ckpt
 *.tar
 *.tar.gz
 *.zip
+*.7z
+
+# Generated caches
 __pycache__/
-.DS_Store
+*.pyc
+.pytest_cache/
+
+# Local/runtime state
+.venv/
+venv/
+*.log
+tmp/
+cache/
+
+# Do not commit raw datasets or generated full outputs
+data/
+datasets/
+raw_data/
+checkpoints/
+est_wavs/
+final_enrollment/
+

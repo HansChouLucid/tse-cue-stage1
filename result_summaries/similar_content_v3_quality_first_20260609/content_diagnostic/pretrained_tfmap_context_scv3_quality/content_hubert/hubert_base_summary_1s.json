@@ -1,0 +1,77 @@
+{
+  "bundle": "HUBERT_BASE",
+  "layer_idx": 6,
+  "num_utterances": 5256,
+  "num_chunks": 43955,
+  "content_gap": {
+    "n": 43955,
+    "mean": 0.11550616476352842,
+    "median": 0.11394609151233515,
+    "p10": 0.05827741645319889,
+    "p25": 0.08336622503074698,
+    "p75": 0.15102736736293998,
+    "p90": 0.1923040177321787,
+    "min": -0.40855995901217,
+    "max": 0.5073811310381379
+  },
+  "content_mismatch_rate_utterance": {
+    "n": 5256,
+    "mean": 0.04176670279611456,
+    "median": 0.0,
+    "p10": 0.0,
+    "p25": 0.0,
+    "p75": 0.0,
+    "p90": 0.0,
+    "min": 0.0,
+    "max": 1.0
+  },
+  "waveform_interferer_rate_utterance": {
+    "n": 5256,
+    "mean": 0.04165338244961533,
+    "median": 0.0,
+    "p10": 0.0,
+    "p25": 0.0,
+    "p75": 0.0,
+    "p90": 0.0,
+    "min": 0.0,
+    "max": 1.0
+  },
+  "joint_content_waveform_rate_utterance": {
+    "n": 5256,
+    "mean": 0.03951394400880702,
+    "median": 0.0,
+    "p10": 0.0,
+    "p25": 0.0,
+    "p75": 0.0,
+    "p90": 0.0,
+    "min": 0.0,
+    "max": 1.0
+  },
+  "utterance_any_content_mismatch": 0.05346270928462709,
+  "utterance_content_rate_gt_0p1": 0.0517503805175038,
+  "utterance_content_rate_gt_0p2": 0.04452054794520548,
+  "utterance_any_joint": 0.04509132420091324,
+  "utterance_joint_rate_gt_0p1": 0.044710806697108064,
+  "low_sisnri_content_rate": {
+    "n": 229,
+    "mean": 0.9111041069556354,
+    "median": 1.0,
+    "p10": 0.6533333333333333,
+    "p25": 1.0,
+    "p75": 1.0,
+    "p90": 1.0,
+    "min": 0.0,
+    "max": 1.0
+  },
+  "good_sisnri_content_rate": {
+    "n": 3959,
+    "mean": 0.00043173943668721015,
+    "median": 0.0,
+    "p10": 0.0,
+    "p25": 0.0,
+    "p75": 0.0,
+    "p90": 0.0,
+    "min": 0.0,
+    "max": 0.2
+  }
+}

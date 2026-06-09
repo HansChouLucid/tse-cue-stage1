@@ -1,55 +1,52 @@
-# TSE Cue Stage-1 Recovery Repository
+# TSE Cue Stage-1 Quality-v3 Freeze
 
-This repository stores small, critical artifacts for the audio-only TSE cue stage-1 mismatch study. It is designed for fast recovery after renting a new GPU instance.
+This branch/package freezes the current Stage-1 audio-only TSE cue work as of 2026-06-09.
 
-It intentionally does **not** contain large wav datasets, LibriSpeech/LibriMix archives, full conda environments, or materialized 960h mixtures.
+The current formal content-side evidence uses only **quality-first similar-content v3**. Old similar-content v2 and old v3 TTS results are kept out of this package because they were found to have serious data-quality or construction issues.
 
 ## What Is Included
 
-- `experiment_pipeline/`: local research pipeline notes and reports.
-- `stage1_html_report/`: browser-friendly HTML summary package.
-- `code_tools/`: diagnostic / inference helper scripts used in the experiments.
-- `configs/`: WeSep experiment configs.
-- `results/`: aggregate reports, SSL summaries, case attribution CSV/JSON.
-- `manifests_small/`: small v2 TTS WeSep manifest files.
-- `remote_inventory_20260525.md`: storage snapshot before pausing the instance.
+- `stage1_report_snapshot/`: latest local HTML report snapshot for advisor-facing reading.
+- `scripts/`: current quality-first v3 generation, quality verification, SI-SDR recomputation, and mechanism-probe scripts.
+- `result_summaries/`: small CSV/JSON summaries for quality-first similar-content v3. Full wavs and checkpoints are intentionally excluded.
+- `wesep_real_tse_stage1_files/`: selected WeSep REAL-TSE files that were edited or used for Stage-1 BSRNN cue training and diagnostics.
+- `ARTIFACTS_MANIFEST.md`: where the large local/remote artifacts live, and which old results must not be cited.
+- `CLEANUP_REVIEW_20260609.md`: cleanup candidates that should be deleted or moved only after explicit approval.
 
-## What Is Not Included
+## Current Evidence Boundary
 
-- `/data/tse_cue_project/datasets/Libri2Mix_similar_speaker_960h` (~272G)
-- `/data/tse_cue_project/datasets/Libri2Mix_similar_content_960h` (~293G)
-- `/data/tse_cue_project/imports` (~62G)
-- full LibriSpeech / LibriMix audio archives
-- complete conda environments
+Use as current mainline:
 
-## Quick Recovery Sketch
+- Pretrained USEF-TFGridNet on normal/easy, similar-speaker v2/v3, and quality-first similar-content v3.
+- Pretrained REAL-TSE TFMap+Context on normal/easy, similar-speaker v2/v3, and quality-first similar-content v3.
+- BSRNN controlled cue comparison as a weak/continuation backbone line; 18-epoch results should not be treated as final cue upper bounds.
+- quality-first similar-content v3 quality validation:
+  - final rows: 5256
+  - Whisper large-v3 WER mean: 0.033
+  - CER mean: 0.015
+  - token F1 mean: 0.971
+  - ASR pass rate: 99.98%
 
-```bash
-git clone https://github.com/HansChouLucid/tse-cue-stage1.git
-cd tse-cue-stage1
-# Read experiment_pipeline/README.md and stage1_html_report/index.html first.
-```
+Do not cite as formal evidence:
 
-For a full second-stage run, rebuild or re-download the large datasets on the remote GPU instance, then copy these configs/scripts/results into `/data/tse_cue_project`.
+- similar-content v2 TTS
+- old similar-content v3 TTS enrollment-conflict
+- SCV2TTS diagnostic/case-study tables
+- recovered GitHub v2 TTS artifacts
 
-## Stage-1 Conclusion
+## GitHub Upload Plan
 
-The current evidence supports that fine-grained cue TSE can produce local, finite, diagnosable target/interferer mismatch under hard conditions. Similar-speaker mainly exposes speaker identity mismatch; similar-content v2 TTS mainly exposes content attribution mismatch. Controlled BSRNN comparison shows USEF is more stable than TFMap/Context in the current setup.
-
-## Dataset Reconstruction
-
-Large constructed datasets are not stored here. The reconstruction plan and scripts are included instead:
-
-- `docs/DATA_RECONSTRUCTION.md`
-- `dataset_build_tools/`
-- `scripts/rebuild_stage1_datasets.sh`
-
-After raw LibriSpeech / Libri2Mix metadata is available on a new remote instance, run:
+Recommended branch name:
 
 ```bash
-bash scripts/rebuild_stage1_datasets.sh /data/tse_cue_project
+stage1-quality-v3-freeze-20260609
 ```
 
-## Checkpoint Recovery Note
+Recommended commit message:
 
-This GitHub repository does not store `.pt`/`.ckpt` model weights. See `docs/CHECKPOINT_INVENTORY.md` for the checkpoint paths and recovery plan. If you want to resume without retraining controlled BSRNN models, store those checkpoints separately in object storage.
+```bash
+Freeze stage1 quality-first v3 reports and scripts
+```
+
+This package is intentionally small enough for GitHub. Large data, checkpoints, generated wavs, and full diagnostics should stay local/remote or be moved to object storage.
+
