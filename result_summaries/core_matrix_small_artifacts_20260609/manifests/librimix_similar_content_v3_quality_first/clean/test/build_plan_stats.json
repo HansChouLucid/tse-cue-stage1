@@ -1,0 +1,8 @@
+{
+  "created_plan": 5630,
+  "skipped": 370,
+  "missing_text": 0,
+  "missing_prompt": 0,
+  "filtered_gen_length": 370,
+  "definition": "FIXED SCV3: enrollment voice uses target speaker prompt; enrollment content/gen_text is natural mixture interferer transcript; mixture remains natural."
+}

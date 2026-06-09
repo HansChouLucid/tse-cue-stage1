@@ -1,0 +1,85 @@
+{
+  "num_utterances": 3000,
+  "num_chunks": 34556,
+  "chunk_rates": {
+    "ecapa_mismatch": 0.13766060886676698,
+    "xvector_mismatch": 0.11450978122467878,
+    "mv_speaker_mismatch": 0.05359416599143419,
+    "waveform_prefers_interferer": 0.0327294825790022,
+    "mv_true_drift": 0.025031832388007873
+  },
+  "utterance_rate_distributions": {
+    "ecapa_mismatch_rate": {
+      "n": 3000,
+      "mean": 0.13220117246444452,
+      "median": 0.07692307692307693,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.1857638888888889,
+      "p90": 0.3333333333333333,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "xvector_mismatch_rate": {
+      "n": 3000,
+      "mean": 0.110016825101234,
+      "median": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.13333333333333333,
+      "p90": 0.3125,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "mv_speaker_mismatch_rate": {
+      "n": 3000,
+      "mean": 0.05396657717448983,
+      "median": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "p90": 0.14285714285714285,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "waveform_interferer_rate": {
+      "n": 3000,
+      "mean": 0.03737970928137337,
+      "median": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "p90": 0.0,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "mv_true_drift_rate": {
+      "n": 3000,
+      "mean": 0.028626182702193595,
+      "median": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "p90": 0.0,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "mean_local_target_interferer_si_sdr_gap": {
+      "n": 3000,
+      "mean": 46.74228066712181,
+      "median": 50.202384625719006,
+      "p10": 38.720701003188466,
+      "p25": 44.529454444240194,
+      "p75": 55.43357726456705,
+      "p90": 59.499013703056235,
+      "min": -59.69789359915621,
+      "max": 74.68705490955209
+    }
+  },
+  "case_level_rates": {
+    "any_mv_speaker_mismatch": 0.24133333333333334,
+    "any_mv_true_drift": 0.03966666666666667,
+    "mv_speaker_mismatch_ge20pct": 0.07066666666666667,
+    "mv_true_drift_ge20pct": 0.038
+  }
+}

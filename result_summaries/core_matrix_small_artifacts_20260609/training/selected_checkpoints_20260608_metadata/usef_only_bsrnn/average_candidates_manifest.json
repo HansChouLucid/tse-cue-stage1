@@ -1,0 +1,52 @@
+{
+  "created_at": "2026-06-08 14:41:39",
+  "candidates": [
+    {
+      "name": "avg_lowLR_ckpt2_4_5",
+      "path": "/data/tse_cue_project/experiments/normal_basic_single_cue/selected_checkpoints_20260608/usef_only_bsrnn/avg_usef_bsrnn_lowLR_ckpt2_4_5.pt",
+      "type": "same_branch_average",
+      "components": [
+        {
+          "checkpoint": "/data/tse_cue_project/experiments/normal_basic_single_cue/usef_only_bsrnn_continue_e48_plus5_lr5e6_a100_gpu1_bs8_20260608/models/checkpoint_2.pt",
+          "total_epoch": 50,
+          "val_loss": -11.290254006703695
+        },
+        {
+          "checkpoint": "/data/tse_cue_project/experiments/normal_basic_single_cue/usef_only_bsrnn_continue_e48_plus5_lr5e6_a100_gpu1_bs8_20260608/models/checkpoint_4.pt",
+          "total_epoch": 52,
+          "val_loss": -11.260916145324707
+        },
+        {
+          "checkpoint": "/data/tse_cue_project/experiments/normal_basic_single_cue/usef_only_bsrnn_continue_e48_plus5_lr5e6_a100_gpu1_bs8_20260608/models/checkpoint_5.pt",
+          "total_epoch": 53,
+          "val_loss": -11.287785930633545
+        }
+      ]
+    },
+    {
+      "name": "avg_top3_total47_50_53",
+      "path": "/data/tse_cue_project/experiments/normal_basic_single_cue/selected_checkpoints_20260608/usef_only_bsrnn/avg_usef_bsrnn_top3_total47_50_53.pt",
+      "type": "near_best_cross_branch_average",
+      "components": [
+        {
+          "name": "main_total47_ckpt29",
+          "checkpoint": "/data/tse_cue_project/experiments/normal_basic_single_cue/usef_only_bsrnn_continue_e18_plus30_a100_gpu1_bs8_20260607/models/checkpoint_29.pt",
+          "total_epoch": 47,
+          "val_loss": -11.285523661931355
+        },
+        {
+          "name": "lowLR_total50_ckpt2",
+          "checkpoint": "/data/tse_cue_project/experiments/normal_basic_single_cue/usef_only_bsrnn_continue_e48_plus5_lr5e6_a100_gpu1_bs8_20260608/models/checkpoint_2.pt",
+          "total_epoch": 50,
+          "val_loss": -11.290254006703695
+        },
+        {
+          "name": "lowLR_total53_ckpt5",
+          "checkpoint": "/data/tse_cue_project/experiments/normal_basic_single_cue/usef_only_bsrnn_continue_e48_plus5_lr5e6_a100_gpu1_bs8_20260608/models/checkpoint_5.pt",
+          "total_epoch": 53,
+          "val_loss": -11.287785930633545
+        }
+      ]
+    }
+  ]
+}

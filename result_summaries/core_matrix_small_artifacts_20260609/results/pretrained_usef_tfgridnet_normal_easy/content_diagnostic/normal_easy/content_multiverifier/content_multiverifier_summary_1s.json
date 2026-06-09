@@ -1,0 +1,125 @@
+{
+  "num_utterances": 6000,
+  "num_chunks": 51070,
+  "chunk_rates": {
+    "wav2vec2_content_mismatch": 0.07103974936361857,
+    "wavlm_content_mismatch": 0.05355394556491091,
+    "hubert_content_mismatch": 0.04781672214607401,
+    "waveform_prefers_interferer": 0.04439005286861171,
+    "two_verifier_content_mismatch": 0.042588603877031526,
+    "two_verifier_si_sdr_confirmed_drift": 0.04080673585275112,
+    "tri_verifier_content_mismatch": 0.0414724887409438,
+    "tri_verifier_si_sdr_confirmed_drift": 0.04065008811435285
+  },
+  "utterance_rate_distributions": {
+    "waveform_interferer_rate": {
+      "n": 6000,
+      "mean": 0.04938341665143136,
+      "median": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "p90": 0.0,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "wav2vec2_content_mismatch_rate": {
+      "n": 6000,
+      "mean": 0.07602960282420101,
+      "median": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.05555555555555555,
+      "p90": 0.18181818181818182,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "wavlm_content_mismatch_rate": {
+      "n": 6000,
+      "mean": 0.05877230303186691,
+      "median": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "p90": 0.1111111111111111,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "hubert_content_mismatch_rate": {
+      "n": 6000,
+      "mean": 0.05295097110656826,
+      "median": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "p90": 0.0,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "two_verifier_content_mismatch_rate": {
+      "n": 6000,
+      "mean": 0.04734406061989265,
+      "median": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "p90": 0.0,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "two_verifier_true_drift_rate": {
+      "n": 6000,
+      "mean": 0.04526064814814815,
+      "median": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "p90": 0.0,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "tri_verifier_content_mismatch_rate": {
+      "n": 6000,
+      "mean": 0.046068034579799286,
+      "median": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "p90": 0.0,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "tri_verifier_true_drift_rate": {
+      "n": 6000,
+      "mean": 0.0450517797017797,
+      "median": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "p90": 0.0,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "mean_local_target_interferer_si_sdr_gap": {
+      "n": 6000,
+      "mean": 49.56953294224486,
+      "median": 54.81022080654509,
+      "p10": 41.22574588633427,
+      "p25": 49.26648182831856,
+      "p75": 59.66735606951558,
+      "p90": 64.23106749877331,
+      "min": -76.28591872816878,
+      "max": 78.82174003025861
+    }
+  },
+  "case_level_rates": {
+    "any_two_verifier_content_mismatch": 0.06383333333333334,
+    "any_two_verifier_si_sdr_confirmed_drift": 0.051666666666666666,
+    "any_tri_verifier_content_mismatch": 0.057166666666666664,
+    "any_tri_verifier_si_sdr_confirmed_drift": 0.0515,
+    "two_verifier_content_mismatch_ge20pct": 0.05466666666666667,
+    "two_verifier_si_sdr_confirmed_drift_ge20pct": 0.050333333333333334,
+    "tri_verifier_content_mismatch_ge20pct": 0.05266666666666667,
+    "tri_verifier_si_sdr_confirmed_drift_ge20pct": 0.050333333333333334
+  }
+}

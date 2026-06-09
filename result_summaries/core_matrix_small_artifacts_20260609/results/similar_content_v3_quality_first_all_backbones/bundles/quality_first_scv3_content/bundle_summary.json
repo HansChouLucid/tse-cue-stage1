@@ -1,0 +1,7 @@
+{
+  "plan_rows": 5630,
+  "log_rows": 5630,
+  "quality_rows": 5630,
+  "final_rows": 5256,
+  "asr_csv": "/data/tse_cue_project/diagnostics/similar_content_v3_quality_first_full_pipeline_20260609/full_whisper_large_v3/quality_smoke40_whisper.csv"
+}

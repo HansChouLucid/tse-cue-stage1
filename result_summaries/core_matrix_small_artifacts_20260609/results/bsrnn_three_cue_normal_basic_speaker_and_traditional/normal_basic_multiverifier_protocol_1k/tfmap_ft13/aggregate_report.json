@@ -1,0 +1,36 @@
+{
+  "1.0": {
+    "local_sisdr_gap": {
+      "n": 0
+    },
+    "ecapa_mismatch_rate": {
+      "n": 0
+    },
+    "mv_mismatch_rate": {
+      "n": 0
+    },
+    "mv_true_swap_rate": {
+      "n": 0
+    },
+    "verifier_instability_rate": {
+      "n": 0
+    }
+  },
+  "2.0": {
+    "local_sisdr_gap": {
+      "n": 0
+    },
+    "ecapa_mismatch_rate": {
+      "n": 0
+    },
+    "mv_mismatch_rate": {
+      "n": 0
+    },
+    "mv_true_swap_rate": {
+      "n": 0
+    },
+    "verifier_instability_rate": {
+      "n": 0
+    }
+  }
+}

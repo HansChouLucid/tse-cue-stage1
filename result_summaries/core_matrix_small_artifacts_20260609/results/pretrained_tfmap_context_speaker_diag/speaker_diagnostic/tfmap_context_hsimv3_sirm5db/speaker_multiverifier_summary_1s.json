@@ -1,0 +1,86 @@
+{
+  "num_utterances": 6000,
+  "num_chunks": 69570,
+  "chunk_rates": {
+    "ecapa_mismatch": 0.05903406640793445,
+    "xvector_mismatch": 0.06417996262756935,
+    "mv_speaker_mismatch": 0.05000718700589334,
+    "waveform_prefers_interferer": 0.04938910449906569,
+    "mv_true_drift": 0.04593934167026017
+  },
+  "utterance_rate_distributions": {
+    "ecapa_mismatch_rate": {
+      "n": 6000,
+      "mean": 0.06447008669031125,
+      "median": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "p90": 0.0909090909090909,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "xvector_mismatch_rate": {
+      "n": 6000,
+      "mean": 0.06969148055772496,
+      "median": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "p90": 0.125,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "mv_speaker_mismatch_rate": {
+      "n": 6000,
+      "mean": 0.055141908017840684,
+      "median": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "p90": 0.0,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "waveform_interferer_rate": {
+      "n": 6000,
+      "mean": 0.05601490041634778,
+      "median": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "p90": 0.0,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "mv_true_drift_rate": {
+      "n": 6000,
+      "mean": 0.05117803792874921,
+      "median": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "p90": 0.0,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "mean_local_target_interferer_si_sdr_gap": {
+      "n": 6000,
+      "mean": 43.057579808898076,
+      "median": 48.178986335255885,
+      "p10": 35.00626305368476,
+      "p25": 42.96495277922845,
+      "p75": 52.3015034439951,
+      "p90": 55.93918299873946,
+      "min": -66.67960697601599,
+      "max": 70.87192264504381
+    }
+  },
+  "case_level_rates": {
+    "any_mv_speaker_mismatch": 0.08983333333333333,
+    "any_mv_true_drift": 0.06166666666666667,
+    "mv_speaker_mismatch_ge20pct": 0.060333333333333336,
+    "mv_true_drift_ge20pct": 0.056666666666666664
+  },
+  "merge_note": "Merged from two metadata shards; definitions match run_speaker_local_diagnostic_tfmc.py."
+}

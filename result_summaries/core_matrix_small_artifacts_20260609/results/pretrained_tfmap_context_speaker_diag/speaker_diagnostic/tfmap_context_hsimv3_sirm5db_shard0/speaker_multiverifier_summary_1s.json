@@ -1,0 +1,85 @@
+{
+  "num_utterances": 3000,
+  "num_chunks": 34569,
+  "chunk_rates": {
+    "ecapa_mismatch": 0.058347073968006015,
+    "xvector_mismatch": 0.06378547253319448,
+    "mv_speaker_mismatch": 0.04897451473863867,
+    "waveform_prefers_interferer": 0.04891665943475368,
+    "mv_true_drift": 0.04492464346668981
+  },
+  "utterance_rate_distributions": {
+    "ecapa_mismatch_rate": {
+      "n": 3000,
+      "mean": 0.06361399901440873,
+      "median": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "p90": 0.09090909090909091,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "xvector_mismatch_rate": {
+      "n": 3000,
+      "mean": 0.06938322873377151,
+      "median": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "p90": 0.125,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "mv_speaker_mismatch_rate": {
+      "n": 3000,
+      "mean": 0.054008800963690484,
+      "median": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "p90": 0.0,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "waveform_interferer_rate": {
+      "n": 3000,
+      "mean": 0.05577573224046908,
+      "median": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "p90": 0.0,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "mv_true_drift_rate": {
+      "n": 3000,
+      "mean": 0.05002207738394047,
+      "median": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "p90": 0.0,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "mean_local_target_interferer_si_sdr_gap": {
+      "n": 3000,
+      "mean": 43.220946208691366,
+      "median": 48.21578887307303,
+      "p10": 35.02461285705767,
+      "p25": 42.94340379438552,
+      "p75": 52.43011080475078,
+      "p90": 55.827820417327985,
+      "min": -66.67960697601599,
+      "max": 70.87192264504381
+    }
+  },
+  "case_level_rates": {
+    "any_mv_speaker_mismatch": 0.08733333333333333,
+    "any_mv_true_drift": 0.06166666666666667,
+    "mv_speaker_mismatch_ge20pct": 0.059333333333333335,
+    "mv_true_drift_ge20pct": 0.056
+  }
+}

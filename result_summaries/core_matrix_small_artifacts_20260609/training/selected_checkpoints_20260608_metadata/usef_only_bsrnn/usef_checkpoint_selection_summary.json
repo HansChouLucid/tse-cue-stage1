@@ -1,0 +1,471 @@
+{
+  "created_at": "2026-06-08 14:33:15",
+  "selection": {
+    "cue": "USEF only",
+    "model": "BSRNN",
+    "dataset": "LibriMix basic clean train-100 / dev",
+    "selected_branch": "lowLR_from_total48_plus5",
+    "selected_total_epoch": 50,
+    "selected_branch_epoch": 2,
+    "selected_val_loss": -11.290254006703695,
+    "selected_checkpoint": "/data/tse_cue_project/experiments/normal_basic_single_cue/usef_only_bsrnn_continue_e48_plus5_lr5e6_a100_gpu1_bs8_20260608/models/checkpoint_2.pt",
+    "stable_checkpoint_path": "/data/tse_cue_project/experiments/normal_basic_single_cue/selected_checkpoints_20260608/usef_only_bsrnn/best_usef_bsrnn_train100.pt",
+    "stable_checkpoint_path_type": "symlink",
+    "selection_reason": "lowest validation SISDR loss among completed USEF-only BSRNN continuation branches; warm restart did not improve over low-LR best."
+  },
+  "branches": [
+    {
+      "name": "initial_5ep",
+      "dir": "/data/tse_cue_project/experiments/normal_basic_single_cue/usef_only_bsrnn_normal_train100_5ep_dualA100_ddp2",
+      "start_total_epoch": 0,
+      "note": "initial 5 epoch seed model",
+      "log_exists": true,
+      "num_val_epochs": 5,
+      "recent_val": [
+        {
+          "branch_epoch": 1,
+          "total_epoch": 1,
+          "val_loss": -3.2892677860464006
+        },
+        {
+          "branch_epoch": 2,
+          "total_epoch": 2,
+          "val_loss": -4.79290139356399
+        },
+        {
+          "branch_epoch": 3,
+          "total_epoch": 3,
+          "val_loss": -5.955204467722439
+        },
+        {
+          "branch_epoch": 4,
+          "total_epoch": 4,
+          "val_loss": -6.440185401528915
+        },
+        {
+          "branch_epoch": 5,
+          "total_epoch": 5,
+          "val_loss": -6.806920646983672,
+          "checkpoint": "/data/tse_cue_project/experiments/normal_basic_single_cue/usef_only_bsrnn_normal_train100_5ep_dualA100_ddp2/models/checkpoint_5.pt",
+          "checkpoint_exists": true
+        }
+      ],
+      "recent_train": [
+        {
+          "branch_epoch": 1,
+          "total_epoch": 1,
+          "train_loss": -2.1621013587074622
+        },
+        {
+          "branch_epoch": 2,
+          "total_epoch": 2,
+          "train_loss": -4.4535192654292155
+        },
+        {
+          "branch_epoch": 3,
+          "total_epoch": 3,
+          "train_loss": -5.818282619084356
+        },
+        {
+          "branch_epoch": 4,
+          "total_epoch": 4,
+          "train_loss": -6.867606700840084
+        },
+        {
+          "branch_epoch": 5,
+          "total_epoch": 5,
+          "train_loss": -7.361947099459336
+        }
+      ],
+      "best": {
+        "branch_epoch": 5,
+        "total_epoch": 5,
+        "val_loss": -6.806920646983672,
+        "checkpoint": "/data/tse_cue_project/experiments/normal_basic_single_cue/usef_only_bsrnn_normal_train100_5ep_dualA100_ddp2/models/checkpoint_5.pt",
+        "checkpoint_exists": true
+      },
+      "available_checkpoints": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "final_checkpoint_exists": true,
+      "latest_checkpoint_exists": true
+    },
+    {
+      "name": "ft13_from5_total18",
+      "dir": "/data/tse_cue_project/experiments/normal_basic_single_cue/usef_only_bsrnn_normal_train100_ft13_from5_dualA100_ddp2",
+      "start_total_epoch": 5,
+      "note": "original continuation to total epoch 18",
+      "log_exists": true,
+      "num_val_epochs": 13,
+      "recent_val": [
+        {
+          "branch_epoch": 8,
+          "total_epoch": 13,
+          "val_loss": -10.083146388517982
+        },
+        {
+          "branch_epoch": 9,
+          "total_epoch": 14,
+          "val_loss": -10.229860150240322
+        },
+        {
+          "branch_epoch": 10,
+          "total_epoch": 15,
+          "val_loss": -10.315360120273528
+        },
+        {
+          "branch_epoch": 11,
+          "total_epoch": 16,
+          "val_loss": -10.387070500276943
+        },
+        {
+          "branch_epoch": 12,
+          "total_epoch": 17,
+          "val_loss": -10.38952554993451
+        },
+        {
+          "branch_epoch": 13,
+          "total_epoch": 18,
+          "val_loss": -10.552886200461158,
+          "checkpoint": "/data/tse_cue_project/experiments/normal_basic_single_cue/usef_only_bsrnn_normal_train100_ft13_from5_dualA100_ddp2/models/checkpoint_13.pt",
+          "checkpoint_exists": true
+        }
+      ],
+      "recent_train": [
+        {
+          "branch_epoch": 8,
+          "total_epoch": 13,
+          "train_loss": -10.941027941242341
+        },
+        {
+          "branch_epoch": 9,
+          "total_epoch": 14,
+          "train_loss": -11.038959265853952
+        },
+        {
+          "branch_epoch": 10,
+          "total_epoch": 15,
+          "train_loss": -11.257597417875369
+        },
+        {
+          "branch_epoch": 11,
+          "total_epoch": 16,
+          "train_loss": -11.305276049996301
+        },
+        {
+          "branch_epoch": 12,
+          "total_epoch": 17,
+          "train_loss": -11.48407732286761
+        },
+        {
+          "branch_epoch": 13,
+          "total_epoch": 18,
+          "train_loss": -11.473085258962922
+        }
+      ],
+      "best": {
+        "branch_epoch": 13,
+        "total_epoch": 18,
+        "val_loss": -10.552886200461158,
+        "checkpoint": "/data/tse_cue_project/experiments/normal_basic_single_cue/usef_only_bsrnn_normal_train100_ft13_from5_dualA100_ddp2/models/checkpoint_13.pt",
+        "checkpoint_exists": true
+      },
+      "available_checkpoints": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "final_checkpoint_exists": true,
+      "latest_checkpoint_exists": true
+    },
+    {
+      "name": "continue_e18_plus30_total48",
+      "dir": "/data/tse_cue_project/experiments/normal_basic_single_cue/usef_only_bsrnn_continue_e18_plus30_a100_gpu1_bs8_20260607",
+      "start_total_epoch": 18,
+      "note": "main A100 continuation from total epoch 18",
+      "log_exists": true,
+      "num_val_epochs": 30,
+      "recent_val": [
+        {
+          "branch_epoch": 25,
+          "total_epoch": 43,
+          "val_loss": -11.178907210032145
+        },
+        {
+          "branch_epoch": 26,
+          "total_epoch": 44,
+          "val_loss": -11.177460353851318
+        },
+        {
+          "branch_epoch": 27,
+          "total_epoch": 45,
+          "val_loss": -11.151211563110351
+        },
+        {
+          "branch_epoch": 28,
+          "total_epoch": 46,
+          "val_loss": -11.170627922058106
+        },
+        {
+          "branch_epoch": 29,
+          "total_epoch": 47,
+          "val_loss": -11.285523661931355,
+          "checkpoint": "/data/tse_cue_project/experiments/normal_basic_single_cue/usef_only_bsrnn_continue_e18_plus30_a100_gpu1_bs8_20260607/models/checkpoint_29.pt",
+          "checkpoint_exists": true
+        },
+        {
+          "branch_epoch": 30,
+          "total_epoch": 48,
+          "val_loss": -11.189702476501465
+        }
+      ],
+      "recent_train": [
+        {
+          "branch_epoch": 25,
+          "total_epoch": 43,
+          "train_loss": -12.461272692090146
+        },
+        {
+          "branch_epoch": 26,
+          "total_epoch": 44,
+          "train_loss": -12.43085452421822
+        },
+        {
+          "branch_epoch": 27,
+          "total_epoch": 45,
+          "train_loss": -12.509025309919007
+        },
+        {
+          "branch_epoch": 28,
+          "total_epoch": 46,
+          "train_loss": -12.492839520871124
+        },
+        {
+          "branch_epoch": 29,
+          "total_epoch": 47,
+          "train_loss": -12.472000359802598
+        },
+        {
+          "branch_epoch": 30,
+          "total_epoch": 48,
+          "train_loss": -12.519815623382762
+        }
+      ],
+      "best": {
+        "branch_epoch": 29,
+        "total_epoch": 47,
+        "val_loss": -11.285523661931355,
+        "checkpoint": "/data/tse_cue_project/experiments/normal_basic_single_cue/usef_only_bsrnn_continue_e18_plus30_a100_gpu1_bs8_20260607/models/checkpoint_29.pt",
+        "checkpoint_exists": true
+      },
+      "available_checkpoints": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30
+      ],
+      "final_checkpoint_exists": true,
+      "latest_checkpoint_exists": true
+    },
+    {
+      "name": "lowLR_from_total48_plus5",
+      "dir": "/data/tse_cue_project/experiments/normal_basic_single_cue/usef_only_bsrnn_continue_e48_plus5_lr5e6_a100_gpu1_bs8_20260608",
+      "start_total_epoch": 48,
+      "note": "low-LR finishing branch, 5e-6 to 2e-6",
+      "log_exists": true,
+      "num_val_epochs": 5,
+      "recent_val": [
+        {
+          "branch_epoch": 1,
+          "total_epoch": 49,
+          "val_loss": -11.259200681050618
+        },
+        {
+          "branch_epoch": 2,
+          "total_epoch": 50,
+          "val_loss": -11.290254006703695,
+          "checkpoint": "/data/tse_cue_project/experiments/normal_basic_single_cue/usef_only_bsrnn_continue_e48_plus5_lr5e6_a100_gpu1_bs8_20260608/models/checkpoint_2.pt",
+          "checkpoint_exists": true
+        },
+        {
+          "branch_epoch": 3,
+          "total_epoch": 51,
+          "val_loss": -11.190600824356078
+        },
+        {
+          "branch_epoch": 4,
+          "total_epoch": 52,
+          "val_loss": -11.260916145324707
+        },
+        {
+          "branch_epoch": 5,
+          "total_epoch": 53,
+          "val_loss": -11.287785930633545
+        }
+      ],
+      "recent_train": [
+        {
+          "branch_epoch": 1,
+          "total_epoch": 49,
+          "train_loss": -12.559231832786477
+        },
+        {
+          "branch_epoch": 2,
+          "total_epoch": 50,
+          "train_loss": -12.551356260160228
+        },
+        {
+          "branch_epoch": 3,
+          "total_epoch": 51,
+          "train_loss": -12.593322848065805
+        },
+        {
+          "branch_epoch": 4,
+          "total_epoch": 52,
+          "train_loss": -12.628975716691356
+        },
+        {
+          "branch_epoch": 5,
+          "total_epoch": 53,
+          "train_loss": -12.621597187094943
+        }
+      ],
+      "best": {
+        "branch_epoch": 2,
+        "total_epoch": 50,
+        "val_loss": -11.290254006703695,
+        "checkpoint": "/data/tse_cue_project/experiments/normal_basic_single_cue/usef_only_bsrnn_continue_e48_plus5_lr5e6_a100_gpu1_bs8_20260608/models/checkpoint_2.pt",
+        "checkpoint_exists": true
+      },
+      "available_checkpoints": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "final_checkpoint_exists": true,
+      "latest_checkpoint_exists": true
+    },
+    {
+      "name": "warmrestart_from_total50_plus5",
+      "dir": "/data/tse_cue_project/experiments/normal_basic_single_cue/usef_only_bsrnn_warmrestart_from_total50_lr1e5_5ep_a100_gpu1_bs8_20260608",
+      "start_total_epoch": 50,
+      "note": "warm restart from lowLR best, 1e-5 to 5e-6",
+      "log_exists": true,
+      "num_val_epochs": 5,
+      "recent_val": [
+        {
+          "branch_epoch": 1,
+          "total_epoch": 51,
+          "val_loss": -11.173297425587972
+        },
+        {
+          "branch_epoch": 2,
+          "total_epoch": 52,
+          "val_loss": -11.241209334055583
+        },
+        {
+          "branch_epoch": 3,
+          "total_epoch": 53,
+          "val_loss": -11.283499123891195,
+          "checkpoint": "/data/tse_cue_project/experiments/normal_basic_single_cue/usef_only_bsrnn_warmrestart_from_total50_lr1e5_5ep_a100_gpu1_bs8_20260608/models/checkpoint_3.pt",
+          "checkpoint_exists": true
+        },
+        {
+          "branch_epoch": 4,
+          "total_epoch": 54,
+          "val_loss": -11.244649007161458
+        },
+        {
+          "branch_epoch": 5,
+          "total_epoch": 55,
+          "val_loss": -11.232925417582194
+        }
+      ],
+      "recent_train": [
+        {
+          "branch_epoch": 1,
+          "total_epoch": 51,
+          "train_loss": -12.4769100920524
+        },
+        {
+          "branch_epoch": 2,
+          "total_epoch": 52,
+          "train_loss": -12.502946525314586
+        },
+        {
+          "branch_epoch": 3,
+          "total_epoch": 53,
+          "train_loss": -12.56624138375844
+        },
+        {
+          "branch_epoch": 4,
+          "total_epoch": 54,
+          "train_loss": -12.570836830633292
+        },
+        {
+          "branch_epoch": 5,
+          "total_epoch": 55,
+          "train_loss": -12.578626287621743
+        }
+      ],
+      "best": {
+        "branch_epoch": 3,
+        "total_epoch": 53,
+        "val_loss": -11.283499123891195,
+        "checkpoint": "/data/tse_cue_project/experiments/normal_basic_single_cue/usef_only_bsrnn_warmrestart_from_total50_lr1e5_5ep_a100_gpu1_bs8_20260608/models/checkpoint_3.pt",
+        "checkpoint_exists": true
+      },
+      "available_checkpoints": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "final_checkpoint_exists": true,
+      "latest_checkpoint_exists": true
+    }
+  ]
+}

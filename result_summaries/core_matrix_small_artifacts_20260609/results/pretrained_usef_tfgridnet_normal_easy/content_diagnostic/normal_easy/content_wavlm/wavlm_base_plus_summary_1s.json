@@ -1,0 +1,77 @@
+{
+  "bundle": "WAVLM_BASE_PLUS",
+  "layer_idx": 9,
+  "num_utterances": 6000,
+  "num_chunks": 51070,
+  "content_gap": {
+    "n": 51070,
+    "mean": 0.22616826418294575,
+    "median": 0.23213169029136338,
+    "p10": 0.09625789124968843,
+    "p25": 0.16627533562591654,
+    "p75": 0.3061881202105532,
+    "p90": 0.38243762710788815,
+    "min": -0.778598500640864,
+    "max": 0.9159160296720017
+  },
+  "content_mismatch_rate_utterance": {
+    "n": 6000,
+    "mean": 0.058772303031866896,
+    "median": 0.0,
+    "p10": 0.0,
+    "p25": 0.0,
+    "p75": 0.0,
+    "p90": 0.1111111111111111,
+    "min": 0.0,
+    "max": 1.0
+  },
+  "waveform_interferer_rate_utterance": {
+    "n": 6000,
+    "mean": 0.04938341665143135,
+    "median": 0.0,
+    "p10": 0.0,
+    "p25": 0.0,
+    "p75": 0.0,
+    "p90": 0.0,
+    "min": 0.0,
+    "max": 1.0
+  },
+  "joint_content_waveform_rate_utterance": {
+    "n": 6000,
+    "mean": 0.047165506484256485,
+    "median": 0.0,
+    "p10": 0.0,
+    "p25": 0.0,
+    "p75": 0.0,
+    "p90": 0.0,
+    "min": 0.0,
+    "max": 1.0
+  },
+  "utterance_any_content_mismatch": 0.12916666666666668,
+  "utterance_content_rate_gt_0p1": 0.10216666666666667,
+  "utterance_content_rate_gt_0p2": 0.057833333333333334,
+  "utterance_any_joint": 0.052333333333333336,
+  "utterance_joint_rate_gt_0p1": 0.05216666666666667,
+  "low_sisnri_content_rate": {
+    "n": 310,
+    "mean": 0.9195927012056043,
+    "median": 1.0,
+    "p10": 0.6625000000000001,
+    "p25": 1.0,
+    "p75": 1.0,
+    "p90": 1.0,
+    "min": 0.0,
+    "max": 1.0
+  },
+  "good_sisnri_content_rate": {
+    "n": 4834,
+    "mean": 0.01074132531190111,
+    "median": 0.0,
+    "p10": 0.0,
+    "p25": 0.0,
+    "p75": 0.0,
+    "p90": 0.0,
+    "min": 0.0,
+    "max": 0.6
+  }
+}

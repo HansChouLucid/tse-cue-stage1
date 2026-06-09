@@ -18,6 +18,13 @@ Current GitHub staging package:
 E:\TSE\github_stage1_quality_v3_freeze_20260609
 ```
 
+Current local full core-matrix result package:
+
+```text
+E:\TSE\latest_core_experiment_artifacts_20260609
+E:\TSE\core_stage1_matrix_artifacts_20260609.tar.gz
+```
+
 Local code/source references:
 
 ```text
@@ -52,6 +59,13 @@ Current quality-first similar-content v3 full pipeline:
 ```text
 /data/tse_cue_project/diagnostics/similar_content_v3_quality_first_full_pipeline_20260609
 /data/tse_cue_project/manifests/librimix_similar_content_v3_tts_enroll_conflict_quality_first_20260609
+```
+
+Current core-matrix small artifact package:
+
+```text
+/data/tse_cue_project/github_stage1_uploads/core_stage1_matrix_artifacts_20260609
+/data/tse_cue_project/github_stage1_uploads/core_stage1_matrix_artifacts_20260609.tar.gz
 ```
 
 Current BSRNN training/checkpoint area:
@@ -132,4 +146,3 @@ For large artifacts, prefer one of:
 - cloud object storage such as OSS/S3/R2
 - Hugging Face Datasets for publishable manifests and small derived metadata
 - Hugging Face Hub or Git LFS only for selected small checkpoints, not raw full experiment dumps
-

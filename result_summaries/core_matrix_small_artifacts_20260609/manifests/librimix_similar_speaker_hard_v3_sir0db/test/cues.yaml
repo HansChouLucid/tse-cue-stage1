@@ -1,0 +1,9 @@
+cues:
+  audio:
+    type: raw
+    guaranteed: true
+    scope: speaker
+    policy:
+      type: random
+      key: mix_spk_id
+      resource: /data/tse_cue_project/manifests/librimix_similar_speaker_hard_v3_sir0db/test/cues/audio.json

@@ -1,0 +1,4 @@
+condition,cue,n_target_tasks,status,mv_mismatch_rate_1s_mean,mv_true_swap_rate_1s_mean,verifier_instability_rate_1s_mean,local_sisdr_gap_mean_1s_mean,utterance_si_sdr_target_mean,utterance_si_sdr_gap_mean,any_mv_mismatch_rate_1s,mv_mismatch_rate_1s_gt0p2,any_mv_true_swap_rate_1s,mv_true_swap_rate_1s_gt0p2
+normal-basic-clean-test,USEF,2000,complete,0.024348606080881623,0.014741723023708318,0.11749236394996995,34.133521139311036,10.999162981217813,33.5328124223302,0.0805,0.034,0.0315,0.022
+normal-basic-clean-test,TFMAP,2000,complete,0.0612393279737791,0.04416455193721565,0.13415405613973305,27.881561803392263,8.985444169635473,27.369906086401205,0.1695,0.0875,0.0955,0.0635
+normal-basic-clean-test,Context,2000,complete,0.054123570785621695,0.04180278411174309,0.11654038938051524,31.79914604355128,9.9350174561408,31.151823402588583,0.1315,0.0785,0.081,0.0605

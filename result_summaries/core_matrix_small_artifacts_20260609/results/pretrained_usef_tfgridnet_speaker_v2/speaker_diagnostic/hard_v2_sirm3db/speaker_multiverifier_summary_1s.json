@@ -1,0 +1,86 @@
+{
+  "num_utterances": 6000,
+  "num_chunks": 52698,
+  "chunk_rates": {
+    "ecapa_mismatch": 0.1284488974913659,
+    "xvector_mismatch": 0.10789783293483624,
+    "mv_speaker_mismatch": 0.05615013852518122,
+    "waveform_prefers_interferer": 0.045200956393031996,
+    "mv_true_drift": 0.035447265550874796
+  },
+  "utterance_rate_distributions": {
+    "ecapa_mismatch_rate": {
+      "n": 6000,
+      "mean": 0.1239867621006171,
+      "median": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.1666666666666666,
+      "p90": 0.3333333333333333,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "xvector_mismatch_rate": {
+      "n": 6000,
+      "mean": 0.10707168697684731,
+      "median": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.125,
+      "p90": 0.3125,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "mv_speaker_mismatch_rate": {
+      "n": 6000,
+      "mean": 0.05717888593167722,
+      "median": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "p90": 0.1428571428571428,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "waveform_interferer_rate": {
+      "n": 6000,
+      "mean": 0.04725565964536552,
+      "median": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "p90": 0.0,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "mv_true_drift_rate": {
+      "n": 6000,
+      "mean": 0.03746222574254863,
+      "median": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p75": 0.0,
+      "p90": 0.0,
+      "min": 0.0,
+      "max": 1.0
+    },
+    "mean_local_target_interferer_si_sdr_gap": {
+      "n": 6000,
+      "mean": 46.282588024668975,
+      "median": 50.4945438976274,
+      "p10": 38.67446789070817,
+      "p25": 45.19261333299147,
+      "p75": 55.606826315003616,
+      "p90": 59.71894631540746,
+      "min": -66.93511048390735,
+      "max": 76.79379863415372
+    }
+  },
+  "case_level_rates": {
+    "any_mv_speaker_mismatch": 0.18316666666666667,
+    "any_mv_true_drift": 0.050333333333333334,
+    "mv_speaker_mismatch_ge20pct": 0.07666666666666666,
+    "mv_true_drift_ge20pct": 0.04616666666666667
+  },
+  "merge_note": "Merged from two metadata shards; metric definitions match run_speaker_local_diagnostic.py v1 output."
+}

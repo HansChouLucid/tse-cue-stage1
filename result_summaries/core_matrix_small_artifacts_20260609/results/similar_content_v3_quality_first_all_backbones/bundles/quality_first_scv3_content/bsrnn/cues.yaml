@@ -1,0 +1,9 @@
+cues:
+  audio:
+    type: raw
+    guaranteed: true
+    scope: speaker
+    policy:
+      type: fixed
+      key: mix_spk_id
+      resource: /data/tse_cue_project/diagnostics/similar_content_v3_quality_first_full_pipeline_20260609/bundles/quality_first_scv3_content/bsrnn/fixed_enroll.json
