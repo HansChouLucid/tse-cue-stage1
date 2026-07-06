@@ -1,0 +1,90 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Audio-only TSE Cue Local Mismatch 汇报</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">Audio-only TSE Cue</div>
+    <div class="small">Formal presentation report<br>2026-06-05</div>
+    <nav>
+      <a class="active" href="index.html">总览</a>
+      <a href="01_background_data.html">背景与数据</a>
+      <a href="02_experiments_results.html">实验与结果</a>
+      <a href="03_sisnri_mismatch.html">联合解释</a>
+      <a href="05_anomaly_explanations.html">异常解释</a>
+      <a href="06_case_study.html">Case Study</a>
+      <a href="07_mechanism_probe.html">机制验证</a>
+      <a href="04_conclusion_next.html">结论与计划</a>
+      <a href="08_research_framing_plan.html">研究思路与计划</a>
+    </nav>
+  </aside>
+  <main class="content">
+    <header class="hero">
+      <div class="eyebrow">阶段性汇报</div>
+      <h1>Fine-grained Cue TSE 的局部可靠性分析</h1>
+      <p>本报告基于 audio-only TSE cue 的阶段性实验，重点回答：fine-grained cue 在提供强局部抽取能力的同时，是否需要 global identity cue 作为稳定锚点，对 hard-tail 和 cue-conflict chunk 进行可靠性校准。</p>
+    </header>
+
+    <section>
+      <h2>核心问题</h2>
+      <p>传统 TSE 评价主要依赖 SI-SNRi / SI-SDRi 等整句平均指标，它能回答模型整体分离质量，但不能告诉我们模型在局部时间片段上是否把输出归因到了错误对象。对于 USEF / TFMap / Context 这类 fine-grained cue，局部归因是否稳定本身就是一个值得单独诊断和校准的问题。</p>
+      <div class="note"><b>修正后的主张：</b>本研究不是要证明 fine-grained cue 经常大面积崩溃，而是证明 fine-grained cue 的局部证据不是 self-certifying 的。global cue 的价值不在于替代 fine-grained cue 做分离，而在于作为跨时间稳定的 identity prior / verifier，对 high-risk chunk 进行 reliability calibration。</div>
+    </section>
+
+    <section>
+      <h2>主要结论</h2>
+      <table><thead><tr><th>问题</th><th>阶段性答案</th><th>关键证据</th></tr></thead><tbody>
+        <tr><td>local mismatch 是否真实可测？</td><td>可以。clean-source verifier sanity 证明 speaker/content verifier 在 clean source 上可稳定区分 target 与 interferer。</td><td>Speaker verifier 1s AUC 0.9998、accuracy 0.9944；content SSL clean-source accuracy 为 1.000 / 1.000。</td></tr>
+        <tr><td>强预训练模型是否也有局部风险？</td><td>有，但主要表现为 content-conflict failure tail，而不是高 SI-SNRi 区间的大量持续 drift。</td><td>quality-first v3 中 Pretrained USEF 的 Low SI-SNRi + High Drift 为 633 / 5256，Persistent Drift Case 为 12.27%。</td></tr>
+        <tr><td>TFMap+Context 是否只是弱 cue？</td><td>不是。新版 v3 反而显示 TFMap+Context 是当前最强 content-side 参照。</td><td>Pretrained TFMap+Context 的 SI-SNRi mean 为 15.27 dB，高于 USEF 的 12.24 dB；Low SI-SNRi + High Drift 为 217 / 5256，低于 USEF 的 633 / 5256。</td></tr>
+        <tr><td>controlled BSRNN 18epoch 是否足够？</td><td>还不够。18epoch BSRNN 仍是偏弱 backbone，不能作为最终 cue 上限判断。</td><td>旧 similar-content quick screening 数字已撤下；BSRNN 训练继续推进，后续用 selected checkpoints 在 quality-first v3 上重新评估。</td></tr>
+        <tr><td>SI-SNRi 能否单独解释问题？</td><td>不能。SI-SNRi 与 drift 强相关但不等价。</td><td>新版 v3 显示 content drift 主要集中在 Low SI-SNRi + High Drift tail；TFMap+Context 明显减少该 tail。</td></tr>
+        <tr><td>mismatch 后果是否被 chunk 平均率低估？</td><td>是。chunk-level rate 衡量时间密度，case-level rate 更能体现有多少 utterance 被影响。</td><td>近说话人 Context 的 speaker-driven confirmed case-level rate 为 0.2323。</td></tr>
+      </tbody></table>
+    </section>
+
+    <section>
+      <h2>汇报数字</h2>
+      <div class="kpi-grid">
+        <div class="kpi"><b>5256</b><span>quality-first v3 final rows</span></div>
+        <div class="kpi"><b>99.98%</b><span>Whisper large-v3 ASR pass rate</span></div>
+        <div class="kpi"><b>15.27 dB</b><span>TFMap+Context v3 SI-SNRi mean</span></div>
+        <div class="kpi"><b>12.24 dB</b><span>USEF-TFGridNet v3 SI-SNRi mean</span></div>
+      </div>
+      <p>similar-content 旧 v2 和旧 v3 已被判定存在构造或质量口径问题，正式报告不再引用旧数字。新版 quality-first v3 已完成全量 TTS 质量筛选、五组模型推理和 local diagnostic；它现在是 content-side 的唯一正式主线证据。</p>
+    </section>
+
+    <section>
+      <h2>当前状态</h2>
+      <table><thead><tr><th>模块</th><th>状态</th><th>当前结论 / 产物</th></tr></thead><tbody>
+        <tr><td>similar-speaker v1/v2/v3</td><td>已完成</td><td>强 USEF speaker-side confirmed drift 较低；BSRNN v3 中 TFMap / Context case-level drift 明显更高。</td></tr>
+        <tr><td>similar-content v2 TTS</td><td>已归档，不作为正式证据</td><td>发现 all-uppercase TTS 文本导致生成语音可读性崩坏，不能继续支撑 content-side 主结论。</td></tr>
+        <tr><td>similar-content 旧 v3 TTS</td><td>已归档，不作为正式证据</td><td>发现 conflict 构造和 TTS 文本可读性问题；已由 quality-first v3 替代。</td></tr>
+        <tr><td>similar-content quality-first v3</td><td>已完成</td><td>5256 条 final rows；Whisper large-v3 WER mean 0.033、CER mean 0.015、token F1 mean 0.971；五组模型推理和 content local diagnostic 均完成。</td></tr>
+        <tr><td>mechanism probe</td><td>已完成 speaker-side 初步验证</td><td>cue 层存在局部 ambiguity，后续重点研究哪些 ambiguity 被 separator 纠正、哪些转化为 output drift。</td></tr>
+        <tr><td>BSRNN continuation</td><td>进行中</td><td>2 张 A100 已启动 TFMap 和 USEF continuation；目标是获得 23/28/33/38+ checkpoint sweep。</td></tr>
+      </tbody></table>
+    </section>
+
+    <section>
+      <h2>报告结构</h2>
+      <table><thead><tr><th>页面</th><th>内容</th><th>作用</th></tr></thead><tbody>
+        <tr><td>背景与数据</td><td>研究动机、数据构造、指标定义和 verifier sanity。</td><td>说明问题为什么成立、指标为什么可信。</td></tr>
+        <tr><td>实验与结果</td><td>pretrained USEF-TFGridNet、pretrained TFMap+Context、controlled BSRNN cue comparison。</td><td>展示主线实验和具体数字；similar-content 已使用 quality-first v3 回填。</td></tr>
+        <tr><td>联合解释</td><td>SI-SNRi × Confirmed Drift 四象限、case-level 后果和 failure taxonomy。</td><td>解释底层原因，为 solution 铺路。</td></tr>
+        <tr><td>异常解释</td><td>解释 pretrained USEF speaker-side 和 BSRNN TFMap content-side 两个非单调结果。</td><td>避免把所有结果强行解释成 hard condition 一定更高。</td></tr>
+        <tr><td>Case Study</td><td>基于现有 per-utterance 结果筛选 high-SI-SNRi-with-drift、low-SI-SNRi-high-drift、stable success 和 ordinary failure。</td><td>把指标变成可回溯样本。</td></tr>
+        <tr><td>结论与计划</td><td>可汇报结论、不能过度说的点、下一步实验计划。</td><td>收束阶段性研究。</td></tr>
+      </tbody></table>
+    </section>
+  </main>
+</body>
+</html>
+
+
+
+

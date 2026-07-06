@@ -1,0 +1,72 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SI-SNRi 与 Local Mismatch 联合解释</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">Audio-only TSE Cue</div>
+    <div class="small">Formal presentation report<br>2026-06-09</div>
+    <nav>
+      <a href="index.html">总览</a>
+      <a href="01_background_data.html">背景与数据</a>
+      <a href="02_experiments_results.html">实验与结果</a>
+      <a class="active" href="03_sisnri_mismatch.html">联合解释</a>
+      <a href="05_anomaly_explanations.html">异常解释</a>
+      <a href="06_case_study.html">Case Study</a>
+      <a href="07_mechanism_probe.html">机制验证</a>
+      <a href="04_conclusion_next.html">结论与计划</a>
+      <a href="08_research_framing_plan.html">研究思路与计划</a>
+    </nav>
+  </aside>
+  <main class="content">
+    <header class="hero">
+      <div class="eyebrow">Joint Interpretation</div>
+      <h1>SI-SNRi × Confirmed Drift：从指标到机制</h1>
+      <p>本页说明如何联合解释传统指标和 local mismatch。content-side 已使用 quality-first similar-content v3 重新填入分桶结果；旧 v2 / 旧 v3 数字不再引用。</p>
+    </header>
+
+    <section>
+      <h2>为什么要联合看</h2>
+      <p>SI-SNRi 是整句平均指标，它能回答模型整体分离质量，但无法定位局部 chunk 是否更像 target 还是 interferer。Confirmed Drift 要求 content/speaker verifier 和 Target-Interferer SI-SDR Gap 同时偏向 interferer，因此能提供局部 attribution 方向。</p>
+      <div class="note"><b>联合逻辑：</b>SI-SNRi 回答“整体分离好不好”，Confirmed Drift 回答“局部有没有跟错对象”。二者合起来，可以把失败从单一的低分离质量拆成可解释的 failure types。</div>
+    </section>
+
+    <section>
+      <h2>四象限框架</h2>
+      <table><thead><tr><th>区域</th><th>解释</th><th>研究价值</th><th>后续处理</th></tr></thead><tbody>
+        <tr><td>高 SI-SNRi + 低 Confirmed Drift</td><td>整体分离好，局部归因也稳定。</td><td>stable success，作为正例参照。</td><td>分析 cue 正常工作模式。</td></tr>
+        <tr><td>高 SI-SNRi + 有 Confirmed Drift</td><td>整句平均质量不错，但局部 chunk 曾偏向 interferer。</td><td>说明传统指标可能掩盖局部风险。</td><td>整理 top-k case、timeline 和音频证据。</td></tr>
+        <tr><td>低 SI-SNRi + 高 Confirmed Drift</td><td>失败样本中存在明确 attribution drift。</td><td>解释低 SI-SNRi tail 的重要来源。</td><td>用于 detector、hard negative 和 verifier-guided constraint。</td></tr>
+        <tr><td>低 SI-SNRi + 低 Confirmed Drift</td><td>输出差，但没有可靠证据说明跟错 target/interferer。</td><td>ordinary separation failure。</td><td>通过 backbone、数据和传统 separation loss 改善。</td></tr>
+      </tbody></table>
+    </section>
+
+    <section>
+      <h2>Content-side v3 联合结果</h2>
+      <table><thead><tr><th>模型 / cue</th><th>SI-SNRi mean</th><th>Persistent Drift Case</th><th>High SI-SNRi + High Drift</th><th>Low SI-SNRi + High Drift</th><th>读法</th></tr></thead><tbody>
+        <tr><td>Pretrained USEF-TFGridNet</td><td>12.24</td><td>12.27%</td><td>0 / 5256</td><td>633 / 5256 (12.04%)</td><td>平均性能强，但 content-conflict tail 明显。</td></tr>
+        <tr><td>Pretrained TFMap+Context</td><td>15.27</td><td>4.24%</td><td>0 / 5256</td><td>217 / 5256 (4.13%)</td><td>平均性能更高，tail drift 更少，是当前最强 content-side 参照。</td></tr>
+        <tr><td>BSRNN USEF</td><td>-0.21</td><td>40.01%</td><td>0 / 5256</td><td>1963 / 5256 (37.35%)</td><td>weak backbone 把 content conflict 放大成大规模 tail。</td></tr>
+        <tr><td>BSRNN TFMap</td><td>-1.31</td><td>42.31%</td><td>1 / 5256</td><td>2136 / 5256 (40.64%)</td><td>低 SI-SNRi 与 high drift 高度重合。</td></tr>
+        <tr><td>BSRNN Context</td><td>-1.97</td><td>43.28%</td><td>1 / 5256</td><td>2187 / 5256 (41.61%)</td><td>当前 BSRNN 下 tail 最重。</td></tr>
+      </tbody></table>
+      <div class="note">新版 v3 的核心读法：content drift 不是高 SI-SNRi 区间的常见隐藏错误；一旦形成持续 drift，通常会显著拉低整句 SI-SNRi。因此 content-side 的主要研究对象是 Low SI-SNRi + High Drift tail，而不是“高质量输出里大量说错内容”。</div>
+      <div class="note">最值得继续研究的是 Pretrained TFMap+Context 相比 Pretrained USEF-TFGridNet 显著减少 tail：Low SI-SNRi + High Drift 从 12.04% 降到 4.13%。这提示 cue composition 可能在过滤 enrollment-content conflict 上有优势。</div>
+    </section>
+
+    <section>
+      <h2>Speaker-side 保留读法</h2>
+      <p>speaker-side similar-speaker v1/v3 的结果仍可用于说明 case-level 指标的重要性。平均 chunk-level rate 衡量时间密度，容易被大量稳定片段稀释；Any / Persistent Confirmed Drift Case 更适合回答“一条样本是否被局部 drift 影响过”。</p>
+      <table><thead><tr><th>条件</th><th>Cue</th><th>confirmed drift 主类型</th><th>ordinary separation failure</th><th>stable success</th><th>解释</th></tr></thead><tbody>
+        <tr><td>similar-speaker v1</td><td>USEF</td><td>speaker-driven confirmed 0.0579</td><td>0.0002</td><td>0.3970</td><td>speaker drift 最低。</td></tr>
+        <tr><td>similar-speaker v1</td><td>TFMap</td><td>speaker-driven confirmed 0.1827</td><td>0.0007</td><td>0.2672</td><td>speaker drift 明显增加。</td></tr>
+        <tr><td>similar-speaker v1</td><td>Context</td><td>speaker-driven confirmed 0.2323</td><td>0.0011</td><td>0.2997</td><td>speaker drift 最重。</td></tr>
+      </tbody></table>
+    </section>
+  </main>
+</body>
+</html>

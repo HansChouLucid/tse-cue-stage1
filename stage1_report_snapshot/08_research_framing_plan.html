@@ -1,0 +1,116 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>研究思路与下一步计划</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">Audio-only TSE Cue</div>
+    <div class="small">Research framing &amp; plan<br>2026-06-09</div>
+    <nav>
+      <a href="index.html">总览</a>
+      <a href="01_background_data.html">背景与数据</a>
+      <a href="02_experiments_results.html">实验与结果</a>
+      <a href="03_sisnri_mismatch.html">联合解释</a>
+      <a href="05_anomaly_explanations.html">异常解释</a>
+      <a href="06_case_study.html">Case Study</a>
+      <a href="07_mechanism_probe.html">机制验证</a>
+      <a href="04_conclusion_next.html">结论与计划</a>
+      <a class="active" href="08_research_framing_plan.html">研究思路与计划</a>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <header class="hero">
+      <div class="eyebrow">Research Framing</div>
+      <h1>从 local mismatch 到 cue information design</h1>
+      <p>本页整理当前研究主线：不再把目标简单设定为“证明 fine-grained cue 经常崩”，而是系统分析 TSE cue 需要什么信息、如何表示这些信息，以及哪些局部 ambiguity 会被强 separator 吸收，哪些会形成 hard-tail drift。</p>
+    </header>
+
+    <section>
+      <h2>Motivation 修正</h2>
+      <table><thead><tr><th>阶段</th><th>原始想法</th><th>目前数据带来的修正</th></tr></thead><tbody>
+        <tr><td>最初假设</td><td>fine-grained cue 在 attention / map 层可能 attend 到 similar speaker 或 similar content，从而把错误证据传给 separator。</td><td>这个假设在 cue-level ambiguity 上仍有支持，但 output-level confirmed drift 不一定大面积出现。</td></tr>
+        <tr><td>当前观察</td><td>希望 hard 数据显著拉低模型表现，并由 solution 修复。</td><td>强模型尤其 Pretrained USEF-TFGridNet 在 speaker side 仍很稳；content side 主要体现为 Low SI-SNRi + High Drift tail。</td></tr>
+        <tr><td>修正主线</td><td>只追求“模型崩溃”不够稳。</td><td>更稳的研究问题是：TSE cue 的 information volume、selectivity、locality 如何共同决定平均质量、局部可靠性和 hard-tail 风险。</td></tr>
+      </tbody></table>
+      <div class="note"><b>新的核心主张：</b>做好 TSE 的关键不是单纯把 enrollment 信息保留得越多越好，而是提取对 TSE 有用的信息，并以同时具备信息量、选择性和局部性的方式表示。fine-grained cue 的价值来自丰富局部信息，风险来自这些局部信息并不天然可靠。</div>
+    </section>
+
+    <section>
+      <h2>Cue 三轴框架</h2>
+      <table><thead><tr><th>轴</th><th>定义</th><th>本项目如何观察</th><th>研究含义</th></tr></thead><tbody>
+        <tr><td>Information Volume</td><td>cue 保留了多少 target 相关信息，包括 speaker identity、局部时频结构、phonetic/content context 等。</td><td>通过不同 cue 的结构、传统 SI-SNRi / SI-SDRi 上限、normal/basic 表现观察。</td><td>信息量不足会限制平均分离质量。</td></tr>
+        <tr><td>Selectivity</td><td>cue 中有多少信息真正服务于 target extraction，有多少会被 similar speaker/content 误导。</td><td>通过 target-interferer margin、Ambiguous Cue Mass、Negative Preference Rate、Confirmed Drift 观察。</td><td>选择性不足会带来 local attribution risk 和 hard-tail drift。</td></tr>
+        <tr><td>Locality</td><td>cue 是否能在局部时间 / T-F 区域提供稳定信息，而不是只给整句全局身份先验。</td><td>通过 frame/chunk-level probe、causal/non-causal 差异、local diagnostic 观察。</td><td>局部性决定 cue 是否能处理动态 overlap 和短时冲突。</td></tr>
+      </tbody></table>
+      <div class="warn">三轴不是三个已经被完全独立量化的“真值变量”，而是组织现有实验结果的研究框架。后续每一个方法设计都需要回答：它提高的是 volume、selectivity、locality 中的哪一项，是否牺牲了另一项。</div>
+    </section>
+
+    <section>
+      <h2>现有 Cue 的定位</h2>
+      <table><thead><tr><th>Cue</th><th>信息形式</th><th>优势</th><th>风险 / 缺口</th></tr></thead><tbody>
+        <tr><td>USEF</td><td>mixture 与 enrollment 在高层 TSE 表示空间中 cross-attention，形成 TSE 目标驱动的 conditioned feature。</td><td>selectivity 强，端到端 TSE 目标训练，Pretrained USEF-TFGridNet 是当前非常强的 baseline。</td><td>内部 margin 仍接近 0；speaker side output 很稳，但 content-conflict v3 仍有 Low SI-SNRi + High Drift tail。</td></tr>
+        <tr><td>TFMap</td><td>低层 spectral / T-F map cue，保留更多局部时频结构。</td><td>volume 与 locality 强，容易提供局部频谱锚点。</td><td>selectivity 弱，attention 高熵，容易把无关或误导信息也传入 separator。</td></tr>
+        <tr><td>Context</td><td>来自 speaker verification encoder 的 frame-level context，偏 speaker identity。</td><td>局部身份稳定性强，可作为 speaker-side anchor。</td><td>SV 目标不等于 TSE 目标，可能丢失对 TSE 有用的非身份信息，也可能对 content conflict 帮助有限。</td></tr>
+        <tr><td>TFMap+Context</td><td>低层时频 cue 加 frame-level identity/context cue。</td><td>quality-first similar-content v3 上当前表现最强，显著减少 USEF 的 content-conflict tail。</td><td>需要确认收益来自 cue composition，而不是 checkpoint / backbone / training data 差异。</td></tr>
+      </tbody></table>
+    </section>
+
+    <section>
+      <h2>当前主线证据</h2>
+      <table><thead><tr><th>证据</th><th>结果</th><th>支持的结论</th></tr></thead><tbody>
+        <tr><td>quality-first similar-content v3 数据质量</td><td>5256 条 final rows；Whisper large-v3 WER mean 0.033、CER mean 0.015、token F1 mean 0.971、ASR pass 99.98%。</td><td>新版 content-conflict 数据可以作为正式主线证据，旧 v2 / 旧 v3 不再引用。</td></tr>
+        <tr><td>Pretrained USEF-TFGridNet on similar-content v3</td><td>SI-SNRi mean 12.24 dB；SI-SDRi mean 10.57 dB；Persistent Drift Case 12.27%；Low SI-SNRi + High Drift 633 / 5256。</td><td>强 USEF 在 content conflict 下仍有可分析的 hard-tail。</td></tr>
+        <tr><td>Pretrained TFMap+Context on similar-content v3</td><td>SI-SNRi mean 15.27 dB；SI-SDRi mean 15.27 dB；Persistent Drift Case 4.24%；Low SI-SNRi + High Drift 217 / 5256。</td><td>TFMap+Context 在当前 content-conflict v3 上显著优于 Pretrained USEF，是下一步最重要的横向对比对象。</td></tr>
+        <tr><td>BSRNN 18epoch 三种 cue</td><td>similar-content v3 上 BSRNN USEF / TFMap / Context 的 Persistent Drift Case 分别为 40.01% / 42.31% / 43.28%。</td><td>当前 BSRNN backbone 太弱，适合做 controlled cue 对比的早期证据，不适合作为最终 cue 上限判断。</td></tr>
+        <tr><td>speaker-side mechanism probe</td><td>Pretrained USEF-TFGridNet 的 Negative-margin frame rate 50.2%，Ambiguous Cue Mass 90.1%，但 output drift 远低于 cue ambiguity。</td><td>cue-level ambiguity 与 output-level drift 需要分层理解；强 separator 会吸收大量 ambiguity。</td></tr>
+      </tbody></table>
+    </section>
+
+    <section>
+      <h2>研究路径</h2>
+      <table><thead><tr><th>路径</th><th>核心问题</th><th>价值</th><th>风险控制</th></tr></thead><tbody>
+        <tr><td>路径 A：分析型论文</td><td>TSE 到底需要怎样的 cue；不同 cue 在 volume、selectivity、locality 上的取舍如何影响平均指标和 local drift。</td><td>即使新方法没有全面超过强 USEF，也能形成系统性诊断框架和可复用指标。</td><td>必须给出可预测、可复现的结论，避免只做事后解释。</td></tr>
+        <tr><td>路径 B：方法型论文</td><td>基于分析结论，设计一种更好的 cue：保留 TFMap 的局部信息，引入 USEF 式选择性，或用 global/context cue 校准局部可靠性。</td><td>如果能减少 USEF 的 hard-tail 或在 TFMap/Context 上迁移提升，就有明确方法贡献。</td><td>不强求所有平均 SI-SDR 超过 USEF，但必须在 hard-tail、drift、稳定性或收敛效率上有清楚收益。</td></tr>
+        <tr><td>当前建议</td><td>先以路径 A 为主线，路径 B 作为由证据驱动的落点。</td><td>先解释 TFMap+Context 为什么在 content v3 上强于 USEF，再决定新 cue 设计。</td><td>避免在机制尚不清楚时过早设计复杂方法。</td></tr>
+      </tbody></table>
+    </section>
+
+    <section>
+      <h2>下一步实验计划</h2>
+      <table><thead><tr><th>优先级</th><th>实验 / 分析</th><th>具体做法</th><th>预期回答</th></tr></thead><tbody>
+        <tr><td>P0</td><td>TFMap+Context vs USEF paired tail attribution</td><td>在 quality-first v3 上按同一 utterance 构造四类 bucket：USEF tail corrected by TFMap+Context、both-tail、TFMap+Context-tail-only、neither-tail。比较 local SIR、speaker gap、content gap、target-interferer SI-SDR gap、文本长度、speaker pair 和 TTS quality。</td><td>TFMap+Context 降低 USEF content tail 的原因是什么。</td></tr>
+        <tr><td>P0</td><td>content-side mechanism probe</td><td>对 quality-first v3 导出 USEF / TFMap+Context 的 cue-level margin、entropy、persistent ambiguity，并与 content confirmed drift 对齐。</td><td>content conflict 下的 cue ambiguity 是否能解释 Low SI-SNRi + High Drift tail。</td></tr>
+        <tr><td>P1</td><td>BSRNN continuation checkpoint sweep</td><td>用继续训练后的 USEF / TFMap / Context checkpoint，在 normal/basic、similar-speaker v2/v3、similar-content quality-first v3 上重新推理和 local diagnostic。</td><td>在 backbone 足够强之后，controlled cue ranking 是否改变。</td></tr>
+        <tr><td>P1</td><td>same-backbone TFMap+Context / USEF+Context controlled training</td><td>如果资源允许，在本地 BSRNN 协议下训练双 cue 模型，对齐单 cue 实验口径。</td><td>TFMap+Context 的优势是否来自 cue 互补，而不是公开 checkpoint 差异。</td></tr>
+        <tr><td>P2</td><td>global reliability anchor / cue gating 小实验</td><td>用 global speaker/context score 预测 high-risk chunk，做 post-hoc risk score 或轻量 gate。</td><td>global cue 是否能减少 fine-grained cue 的 hard-tail drift。</td></tr>
+      </tbody></table>
+    </section>
+
+    <section>
+      <h2>可写成论文的主张</h2>
+      <table><thead><tr><th>主张</th><th>需要的证据</th><th>当前状态</th></tr></thead><tbody>
+        <tr><td>传统 SI-SDR/SI-SNR 平均指标会掩盖局部 attribution risk。</td><td>SI-SNRi × drift 四象限、case-level drift、local diagnostic、case study。</td><td>已具备，content v3 后证据更干净。</td></tr>
+        <tr><td>强 fine-grained cue 内部也有 ambiguity，但大部分被 separator 吸收。</td><td>机制 probe + output drift 对齐 + absorbed / converted analysis。</td><td>speaker side 初步具备；content side 是下一步补强重点。</td></tr>
+        <tr><td>TFMap+Context 在 content-conflict 下能减少 USEF hard-tail。</td><td>quality-first v3 paired tail attribution 与 matched-case 分析。</td><td>总体数字支持，归因分析是下一步补强重点。</td></tr>
+        <tr><td>好的 TSE cue 应同时追求 volume、selectivity、locality。</td><td>跨 cue、跨数据、跨 backbone 的一致结果；以及双 cue / gating 的消融。</td><td>作为当前 framing 成立，但仍需 controlled BSRNN 和 content mechanism probe 加强。</td></tr>
+      </tbody></table>
+    </section>
+
+    <section>
+      <h2>边界与注意事项</h2>
+      <table><thead><tr><th>不要这样说</th><th>更稳妥的说法</th></tr></thead><tbody>
+        <tr><td>fine-grained cue 经常导致模型崩溃。</td><td>fine-grained cue 存在局部 ambiguity；强模型可以吸收大部分 ambiguity，但 hard-tail 仍可被定位和分型。</td></tr>
+        <tr><td>USEF 已被 TFMap+Context 全面击败。</td><td>在 quality-first similar-content v3 上，Pretrained TFMap+Context 的平均指标和 tail 指标都优于 Pretrained USEF；speaker side 和训练口径仍需分别讨论。</td></tr>
+        <tr><td>机制 probe 证明 separator 纠正了 ambiguity。</td><td>机制 probe 观察到 cue-level ambiguity 大于 output-level drift；这支持 absorbed ambiguity 的现象描述，但因果纠正需要反事实实验。</td></tr>
+        <tr><td>BSRNN 18epoch 的 cue 排名就是最终结论。</td><td>BSRNN 18epoch 是 controlled but weak backbone；后续需要 continuation checkpoint sweep 后再确认 cue ranking。</td></tr>
+        <tr><td>旧 similar-content v2 / 旧 v3 支持 content mismatch 主结论。</td><td>旧 v2 / 旧 v3 已归档，不再作为正式证据；content-side 正式结论以 quality-first v3 为准。</td></tr>
+      </tbody></table>
+    </section>
+  </main>
+</body>
+</html>

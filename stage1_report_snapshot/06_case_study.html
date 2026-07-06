@@ -1,0 +1,95 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SI-SNRi x Local Drift Case Study</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">Audio-only TSE Cue</div>
+    <div class="small">Formal presentation report<br>2026-06-09</div>
+    <nav>
+      <a href="index.html">总览</a>
+      <a href="01_background_data.html">背景与数据</a>
+      <a href="02_experiments_results.html">实验与结果</a>
+      <a href="03_sisnri_mismatch.html">联合解释</a>
+      <a href="05_anomaly_explanations.html">异常解释</a>
+      <a class="active" href="06_case_study.html">Case Study</a>
+      <a href="07_mechanism_probe.html">机制验证</a>
+      <a href="04_conclusion_next.html">结论与计划</a>
+      <a href="08_research_framing_plan.html">研究思路与计划</a>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <header class="hero">
+      <div class="eyebrow">Case Study</div>
+      <h1>SI-SNRi 与 local drift 的样本级分析</h1>
+      <p>本页只保留当前可作为正式证据的 case-study 结果。旧 similar-content v2 与旧 similar-content v3 已移入垃圾归档；content-side 已替换为 quality-first similar-content v3 的全量分桶。</p>
+    </header>
+
+    <section>
+      <h2>Case 分类规则</h2>
+      <table><thead><tr><th>类别</th><th>筛选规则</th><th>研究意义</th></tr></thead><tbody>
+        <tr><td>High SI-SNRi + Drift</td><td>SI-SNRi >= 10 dB 且 confirmed drift rate &gt; 0；强版本使用 confirmed drift rate >= 0.2。</td><td>检验传统全局指标是否掩盖局部 attribution risk。</td></tr>
+        <tr><td>Low SI-SNRi + High Drift</td><td>SI-SNRi &lt; 0 dB 且 confirmed drift rate >= 0.2。</td><td>解释 failure tail：失败是普通分离差，还是 target/interferer attribution drift。</td></tr>
+        <tr><td>Stable Success Control</td><td>SI-SNRi 高，confirmed drift 为 0。</td><td>作为高质量且局部稳定的正对照。</td></tr>
+        <tr><td>Ordinary Failure Control</td><td>SI-SNRi &lt; 0 dB，但 confirmed drift 为 0。</td><td>区分普通分离失败与 drift-driven failure。</td></tr>
+      </tbody></table>
+      <div class="note">content-side 的 confirmed drift 使用 2-verifier content mismatch 与 waveform direction 同时支持偏向 interferer 的 1s chunk；case-level Persistent Drift 定义为 utterance 中 confirmed drift rate >= 0.2。</div>
+    </section>
+
+    <section>
+      <h2>Content-side Quality-first v3</h2>
+      <p>quality-first v3 的 final rows 为 5256。该数据保持自然 Libri2Mix mixture，只替换 enrollment：用 target speaker voice 说出 interferer transcript，从而制造 cue-content-to-interferer conflict。Whisper large-v3 质量验证显示 WER mean 0.033、CER mean 0.015、token F1 mean 0.971，ASR pass rate 99.98%。</p>
+      <table><thead><tr><th>模型 / cue</th><th>n</th><th>SI-SNRi mean</th><th>SI-SNRi median</th><th>2-verifier Drift mean</th><th>Any Drift Case</th><th>Persistent Drift Case</th><th>High SI-SNRi + Any Drift</th><th>High SI-SNRi + High Drift</th><th>Low SI-SNRi + Any Drift</th><th>Low SI-SNRi + High Drift</th></tr></thead><tbody>
+        <tr><td>Pretrained USEF-TFGridNet</td><td>5256</td><td>12.24</td><td>18.27</td><td>0.107</td><td>0.128</td><td>0.123</td><td>1 / 5256 (0.02%)</td><td>0 / 5256 (0.00%)</td><td>646 / 5256 (12.29%)</td><td>633 / 5256 (12.04%)</td></tr>
+        <tr><td>Pretrained TFMap+Context</td><td>5256</td><td>15.27</td><td>17.18</td><td>0.037</td><td>0.044</td><td>0.042</td><td>1 / 5256 (0.02%)</td><td>0 / 5256 (0.00%)</td><td>221 / 5256 (4.20%)</td><td>217 / 5256 (4.13%)</td></tr>
+        <tr><td>BSRNN USEF</td><td>5256</td><td>-0.21</td><td>4.15</td><td>0.292</td><td>0.447</td><td>0.400</td><td>1 / 5256 (0.02%)</td><td>0 / 5256 (0.00%)</td><td>2059 / 5256 (39.17%)</td><td>1963 / 5256 (37.35%)</td></tr>
+        <tr><td>BSRNN TFMap</td><td>5256</td><td>-1.31</td><td>5.42</td><td>0.337</td><td>0.457</td><td>0.423</td><td>7 / 5256 (0.13%)</td><td>1 / 5256 (0.02%)</td><td>2198 / 5256 (41.82%)</td><td>2136 / 5256 (40.64%)</td></tr>
+        <tr><td>BSRNN Context</td><td>5256</td><td>-1.97</td><td>4.02</td><td>0.346</td><td>0.466</td><td>0.433</td><td>3 / 5256 (0.06%)</td><td>1 / 5256 (0.02%)</td><td>2261 / 5256 (43.02%)</td><td>2187 / 5256 (41.61%)</td></tr>
+      </tbody></table>
+      <div class="note">最清楚的结论是：High SI-SNRi + High Drift 几乎不存在，说明持续 content drift 一旦发生，通常会显著伤害整句重构质量；Low SI-SNRi + High Drift 是 content-side 的主线。Pretrained TFMap+Context 把 Low SI-SNRi + High Drift 从 USEF 的 12.04% 降到 4.13%，这是目前最有价值的新现象。</div>
+      <div class="note">BSRNN 三 cue 的 Low SI-SNRi + High Drift 均超过 37%，说明当前 BSRNN 在 v3 上仍是 weak-backbone failure。它可以用来观察 content conflict 如何被放大，但不能直接用来判断 USEF / TFMap / Context 的最终上限。</div>
+    </section>
+
+    <section>
+      <h2>Speaker-side Similar-speaker Case Study</h2>
+      <p>speaker-side 不受 similar-content TTS 质量问题影响，因此保留为正式证据。这里关注 similar-speaker 条件下模型是否在局部片段中偏向干扰说话人身份。</p>
+      <table><thead><tr><th>模型</th><th>当前可用数据</th><th>全量规模</th><th>可支持的分析</th><th>边界</th></tr></thead><tbody>
+        <tr><td>Pretrained USEF-TFGridNet</td><td>condition-aware utterance taxonomy 中的 similar-speaker 行</td><td>6000</td><td>可做 SI-SNRi 与 speaker drift 的逐样本交叉分类。</td><td>强模型的 high-SI-SNRi confirmed drift 很少，主要用于分析低 SI-SNRi tail。</td></tr>
+        <tr><td>Controlled BSRNN 18epoch</td><td>similar-speaker multiverifier per-utterance summary + full SI-SNRi log</td><td>每个 cue 12000</td><td>可比较 USEF / TFMap / Context 三种 cue 的 speaker drift tail。</td><td>BSRNN 18epoch backbone 偏弱，后续需用继续训练后的 checkpoint 复核。</td></tr>
+      </tbody></table>
+
+      <h3>Pretrained USEF-TFGridNet：全量分类</h3>
+      <table><thead><tr><th>类别</th><th>n</th><th>占全量比例</th><th>SI-SNRi mean</th><th>Speaker mismatch mean</th><th>ECAPA true swap mean</th><th>Local waveform gap mean</th></tr></thead><tbody>
+        <tr><td>Low SI-SNRi + High Drift</td><td>231</td><td>3.85%</td><td>-30.265</td><td>0.6300</td><td>0.6950</td><td>-41.674</td></tr>
+        <tr><td>Stable Success Control</td><td>5443</td><td>90.72%</td><td>18.753</td><td>0.0476</td><td>0.0000</td><td>51.290</td></tr>
+        <tr><td>Ordinary Failure Control</td><td>68</td><td>1.13%</td><td>-12.407</td><td>0.0079</td><td>0.3219</td><td>-12.865</td></tr>
+        <tr><td>Other</td><td>258</td><td>4.30%</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+      </tbody></table>
+      <div class="note">Pretrained USEF-TFGridNet 的核心现象是：high-SI-SNRi 区间几乎没有强 confirmed speaker drift；drift 主要集中在低 SI-SNRi failure tail。Low SI-SNRi + High Drift 的 local waveform gap 为负，说明 output 在局部 waveform 层面更接近 interferer。</div>
+
+      <h3>BSRNN 18epoch：similar-speaker SI-SNRi x High Drift</h3>
+      <p>High Drift 定义为 <code>mv_true_swap_rate_1s >= 0.2</code>。High SI-SNRi 使用 <code>SI-SNRi >= 10 dB</code>，Low SI-SNRi 使用 <code>SI-SNRi &lt; 0 dB</code>。</p>
+      <table><thead><tr><th>Cue</th><th>n</th><th>High SI-SNRi + High Drift</th><th>Low SI-SNRi + High Drift</th><th>High Drift / all</th><th>P(High Drift | High SI-SNRi)</th><th>P(High Drift | Low SI-SNRi)</th><th>SI-SNRi mean</th></tr></thead><tbody>
+        <tr><td>USEF</td><td>12000</td><td>158 / 12000 (1.32%)</td><td>153 / 12000 (1.28%)</td><td>450 / 12000 (3.75%)</td><td>2.05%</td><td>26.38%</td><td>9.69</td></tr>
+        <tr><td>TFMap</td><td>12000</td><td>187 / 12000 (1.56%)</td><td>548 / 12000 (4.57%)</td><td>1487 / 12000 (12.39%)</td><td>4.87%</td><td>35.82%</td><td>6.29</td></tr>
+        <tr><td>Context</td><td>12000</td><td>420 / 12000 (3.50%)</td><td>1018 / 12000 (8.48%)</td><td>2110 / 12000 (17.58%)</td><td>8.18%</td><td>46.51%</td><td>5.71</td></tr>
+      </tbody></table>
+      <div class="note">BSRNN 上三种 cue 的 speaker-side drift 呈现清晰梯度：USEF 最稳，TFMap 居中，Context 最容易出现 drift。这个结果支持“cue 表示的选择性与 separator 纠错能力共同决定 output drift”的后续研究方向。</div>
+    </section>
+
+    <section>
+      <h2>归档与回填规则</h2>
+      <table><thead><tr><th>规则</th><th>说明</th></tr></thead><tbody>
+        <tr><td>旧 content 指标不再引用</td><td>任何带旧 similar-content v2、旧 v3、SCV2TTS、20260607 old v3 的 case study 或 metric 表，都只允许出现在垃圾归档中。</td></tr>
+        <tr><td>新版 v3 已回填</td><td>当前已回填传统指标 SI-SDR / SI-SDRi / SI-SNR / SI-SNRi、local diagnostic 与 case bins；Pretrained USEF 的 SI-SDR 已按 8 kHz output 对齐重采样后补算。</td></tr>
+        <tr><td>case 表要去重</td><td>代表样本优先按 speaker pair、text template 或 enrollment template 去重，避免把同一模板重复展示成多个独立模式。</td></tr>
+      </tbody></table>
+    </section>
+  </main>
+</body>
+</html>

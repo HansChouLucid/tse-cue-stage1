@@ -131,6 +131,7 @@ Use GitHub for:
 - report snapshots
 - small CSV/JSON summaries
 - artifact manifests
+- restart and metric-definition guides
 
 Do not use GitHub for:
 

@@ -1,0 +1,60 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>异常结果解释</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">Audio-only TSE Cue</div>
+    <div class="small">Formal presentation report<br>2026-06-04</div>
+    <nav>
+      <a href="index.html">总览</a>
+      <a href="01_background_data.html">背景与数据</a>
+      <a href="02_experiments_results.html">实验与结果</a>
+      <a href="03_sisnri_mismatch.html">联合解释</a>
+      <a class="active" href="05_anomaly_explanations.html">异常解释</a>
+      <a href="06_case_study.html">Case Study</a>
+      <a href="07_mechanism_probe.html">机制验证</a>
+      <a href="04_conclusion_next.html">结论与计划</a>
+      <a href="08_research_framing_plan.html">研究思路与计划</a>
+    </nav>
+  </aside>
+  <main class="content">
+    <header class="hero">
+      <div class="eyebrow">Result Caveats</div>
+      <h1>两个非单调结果的解释</h1>
+      <p>本页专门解释当前表格中看起来反直觉的结果。核心原则是：不要把所有指标强行解释成 hard condition 一定更高；应该区分 verifier-level uncertainty、waveform-confirmed drift、数据分布和模型背景风险。</p>
+    </header>
+
+    <section>
+      <h2>异常一：Pretrained USEF-TFGridNet Speaker Side</h2>
+      <p>在 pretrained USEF-TFGridNet 上，normal/easy reference 的 Speaker Confirmed Drift (1s) 和 Any Confirmed Drift Case 反而略高于 similar-speaker hard condition。这里的 similar-speaker hard 指的是早期 <b>similar-speaker v2 汇总口径</b>，主要覆盖 v2 0 dB / -3 dB，并不是后续补充的 v3 0 / -3 / -5 dB 全量表。</p>
+      <table><thead><tr><th>Condition</th><th>SI-SNRi mean</th><th>Speaker Mismatch (1s)</th><th>Speaker Confirmed Drift (1s)</th><th>Any Confirmed Drift Case</th><th>读法</th></tr></thead><tbody>
+        <tr><td>normal/easy reference</td><td>15.90</td><td>0.0499</td><td>0.0388</td><td>0.0510</td><td>普通条件下也有非零背景风险。</td></tr>
+        <tr><td>similar-speaker hard v2 summary</td><td>15.86</td><td>0.0699</td><td>0.0243</td><td>0.0457</td><td>speaker verifier mismatch 上升，但 waveform-confirmed drift 未同步上升。</td></tr>
+      </tbody></table>
+      <div class="note"><b>版本说明：</b>v2 是 same-gender + top-similar speaker mining 的第一版 hard similar-speaker 数据；v3 后续加入 utterance-level acoustic matching 与 -5 dB SIR。v3 的完整结果请以“实验与结果”页 speaker-side v2/v3 对齐表为准。本页异常一保留 v2 口径，是为了解释最早观察到的“normal/easy confirmed drift 反而略高”的现象。</div>
+      <div class="note"><b>解释 1：</b>similar-speaker hard condition 主要增加 speaker verifier 的局部不确定性，而不一定增加 waveform-confirmed speaker drift。强 pretrained USEF-TFGridNet 在 waveform separation 层面较稳，因此 verifier mismatch 不一定转化为 Target-Interferer SI-SDR Gap &lt; 0。</div>
+      <div class="note"><b>解释 2：</b>normal/easy 不等于每条局部片段都简单。SI-SNRi 和 drift 会受到句长、重叠比例、静音、source energy、mixture baseline 难度等因素影响，因此 normal/easy 可以存在非零甚至略高的 confirmed drift 背景风险。</div>
+      <div class="warn"><b>汇报边界：</b>不能说 pretrained USEF 在 similar-speaker 下出现大量真实 speaker swap。更稳的说法是：similar-speaker 提高了 verifier-level attribution uncertainty，但强模型的 waveform-confirmed speaker drift 没有同步放大。</div>
+    </section>
+
+    <section>
+      <h2>异常二：BSRNN TFMap Content Side（历史归档）</h2>
+      <p>这一异常来自旧 similar-content v2 TTS：TFMap 的 normal/basic fixed-enroll 在若干 content drift 指标上高于旧 v2 TTS。由于 v2 TTS 已被判定存在 all-uppercase TTS 可读性问题，相关数值表已经移入垃圾归档，不再作为正式 content-side 结论。</p>
+      <div class="warn"><b>新版口径：</b>TFMap / Context / USEF 的 content-side 差异必须使用 quality-first similar-content v3 的全量推理和 local diagnostic 重新判断。正式汇报中不再引用旧 v2 的 SI-SNRi、drift rate 或 case 数字。</div>
+    </section>
+
+    <section>
+      <h2>对主结论的影响</h2>
+      <table><thead><tr><th>观察</th><th>是否削弱主结论？</th><th>如何纳入报告</th></tr></thead><tbody>
+        <tr><td>pretrained USEF similar-speaker v2 confirmed drift 未高于 normal/easy</td><td>不削弱。它说明强模型对 waveform-confirmed speaker drift 较稳，但 speaker mismatch 上升仍提示 attribution uncertainty。</td><td>写成强模型边界：hard condition 不一定造成大规模 confirmed swap；v3 结果需要在主实验页中单独引用。</td></tr>
+        <tr><td>旧 similar-content v2 / 旧 v3 content-side 异常</td><td>不用于正式主结论。</td><td>旧指标已经移入垃圾归档；新版 quality-first v3 已完成，正式 content-side 结论以实验结果页、联合解释页和 case study 页的新表格为准。</td></tr>
+      </tbody></table>
+    </section>
+  </main>
+</body>
+</html>

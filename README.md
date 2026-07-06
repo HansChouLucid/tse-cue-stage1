@@ -17,6 +17,8 @@ The core matrix is:
 - `result_summaries/`: pruned CSV/JSON summaries for the core experiment matrix. Full wavs and checkpoints are intentionally excluded.
 - `wesep_real_tse_stage1_files/`: selected WeSep REAL-TSE files that were edited or used for Stage-1 BSRNN cue training and diagnostics.
 - `docs/CORE_EXPERIMENT_MATRIX_20260609.md`: current coverage table, dataset construction summary, and known gaps.
+- `docs/STAGE1_RESTART_GUIDE_20260609.md`: restart guide for future experimenters/AI agents, including valid scope, asset locations, metric definitions, and rerun procedure.
+- `docs/STAGE1_CURRENT_STATUS_AND_NEXT_STEPS_20260706.md`: compact completed-vs-next status note for the current Stage-1 mainline.
 - `ARTIFACTS_MANIFEST.md`: where the large local/remote artifacts live, and which old results must not be cited.
 - `CLEANUP_REVIEW_20260609.md`: cleanup candidates that should be deleted or moved only after explicit approval.
 

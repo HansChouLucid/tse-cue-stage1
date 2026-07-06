@@ -1,0 +1,130 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>结论与下一步计划</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">Audio-only TSE Cue</div>
+    <div class="small">Formal presentation report<br>2026-06-05</div>
+    <nav>
+      <a href="index.html">总览</a>
+      <a href="01_background_data.html">背景与数据</a>
+      <a href="02_experiments_results.html">实验与结果</a>
+      <a href="03_sisnri_mismatch.html">联合解释</a>
+      <a href="05_anomaly_explanations.html">异常解释</a>
+      <a href="06_case_study.html">Case Study</a>
+      <a href="07_mechanism_probe.html">机制验证</a>
+      <a class="active" href="04_conclusion_next.html">结论与计划</a>
+      <a href="08_research_framing_plan.html">研究思路与计划</a>
+    </nav>
+  </aside>
+  <main class="content">
+    <header class="hero">
+      <div class="eyebrow">Conclusion</div>
+      <h1>阶段性结论与下一步计划</h1>
+      <p>本页把当前证据收束成导师汇报口径，并列出后续需要补强的实验与 solution 方向。</p>
+    </header>
+
+    <section>
+      <h2>可汇报结论</h2>
+      <ol>
+        <li>fine-grained cue TSE 的 hard-condition behavior 不能只用平均 SI-SNRi 描述，需要同时报告 global performance 和 local attribution diagnostic。</li>
+        <li>pretrained USEF-TFGridNet 是强模型参照，normal/easy SI-SNRi 很高，当前 hard set 下 confirmed drift 较低；它说明 fine-grained cue 可以非常强，但也要求我们把研究问题修正为局部可靠性校准，而不是证明模型经常崩溃。</li>
+        <li>controlled BSRNN 18epoch 中，USEF 在 speaker-side 和 content-side 均最稳，TFMap / Context 更容易出现 Confirmed Drift。</li>
+        <li>hard similar-speaker v3 在 BSRNN 上形成了更清楚的 case-level speaker-side tail：-5 dB 条件下 TFMap / Context 的 Any Confirmed Drift Case 分别达到 0.271 / 0.277，而 USEF 仍约 0.080。</li>
+        <li>similar-content v2 和旧 v3 的正式结论已撤下：旧 v2 存在 all-uppercase TTS 可读性问题，旧 v3 存在 conflict 构造和 TTS 可读性问题。</li>
+        <li>quality-first similar-content v3 已完成：5256 条 final rows，Whisper large-v3 ASR pass rate 99.98%，五组模型全量推理和 content local diagnostic 均完成。</li>
+        <li>REAL-TSE TFMap+Context 在新版 v3 上优于 single USEF：SI-SNRi mean 15.27 vs 12.24，Low SI-SNRi + High Drift 为 4.13% vs 12.04%。这成为后续解释 cue composition 为什么能过滤 content conflict 的核心现象。</li>
+        <li>TFMap+Context 的 similar-speaker 全局推理和 speaker-side local diagnostic 已完成：v3 0 / -3 / -5 dB 的 SI-SNRi mean 分别为 14.33 / 16.04 / 17.07，Speaker Confirmed Drift (1s) 稳定在约 0.045-0.046。</li>
+        <li>BSRNN 在新版 v3 上仍是 weak-backbone 状态，三种 cue 的 SI-SNRi mean 为 -0.21 / -1.31 / -1.97，Persistent Drift Case 为 40.0% / 42.3% / 43.3%，因此需要继续训练后再做最终 cue ablation。</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>已完成实验矩阵</h2>
+      <table><thead><tr><th>实验</th><th>覆盖模型</th><th>状态</th><th>主要结论</th></tr></thead><tbody>
+        <tr><td>clean-source verifier sanity</td><td>speaker/content verifiers</td><td>完成</td><td>证明 1s local verifier 本身可用，为 mismatch 指标提供基础可信度。</td></tr>
+        <tr><td>Pretrained USEF-TFGridNet speaker/content diagnostic</td><td>USEF-TFGridNet</td><td>完成</td><td>强模型整体稳，但 v3 content-conflict 能暴露更明显 tail。</td></tr>
+        <tr><td>Controlled BSRNN 18epoch cue comparison</td><td>USEF / TFMap / Context</td><td>完成</td><td>USEF 最稳；TFMap / Context local drift 更高；但 18epoch backbone 不足。</td></tr>
+        <tr><td>hard similar-speaker v2/v3</td><td>Pretrained USEF + BSRNN</td><td>完成</td><td>v3 增加 case-level ambiguity；BSRNN TFMap / Context speaker-side tail 明显。</td></tr>
+        <tr><td>similar-content v2 / 旧 v3</td><td>历史 TTS 数据</td><td>归档</td><td>不再作为正式 content-side 证据。</td></tr>
+        <tr><td>quality-first similar-content v3</td><td>Pretrained USEF、TFMap+Context、BSRNN 三 cue</td><td>完成</td><td>Pretrained TFMap+Context 明显减少 USEF content-conflict tail；BSRNN 仍显示 weak-backbone failure。</td></tr>
+        <tr><td>TFMap+Context similar-speaker local diagnostic</td><td>REAL-TSE TFMap+Context</td><td>完成</td><td>v2/v3 speaker confirmed drift 稳定在约 0.045-0.046，说明该强组合 cue 在 speaker-side 也较稳。</td></tr>
+        <tr><td>mechanism-level ambiguity probe</td><td>USEF / TFMap speaker-side</td><td>完成初版</td><td>cue 表示层存在局部 negative margin / ambiguity，后续需要关联到 separator output drift。</td></tr>
+      </tbody></table>
+    </section>
+
+    <section>
+      <h2>不能过度说的点</h2>
+      <table><thead><tr><th>不应这样说</th><th>原因</th><th>建议表述</th></tr></thead><tbody>
+        <tr><td>normal/easy 没有 drift。</td><td>BSRNN fixed-enroll baseline 与 pretrained USEF-TFGridNet normal/easy baseline 都有非零 drift。</td><td>普通条件存在背景风险，hard condition 与 cue mechanism 会改变或放大风险。</td></tr>
+        <tr><td>Context 整体最差。</td><td>在当前 BSRNN v3 上 Context tail 最重，但 BSRNN backbone 仍偏弱，不能把它直接外推为所有 backbone 下的 cue 上限。</td><td>更稳的说法是：在当前 BSRNN weak-backbone setting 中，Context 对 content conflict 最敏感。</td></tr>
+        <tr><td>local mismatch 与 SI-SNRi 完全独立。</td><td>低 SI-SNRi tail 与 drift 高度对齐。</td><td>二者强相关但不等价；local mismatch 解释和定位 tail failure。</td></tr>
+        <tr><td>SepFormer 可以直接进入 local mismatch 横向对比。</td><td>SepFormer normal/easy SI-SNRi 已经为负，local drift 会被普通分离失败污染。</td><td>当前只能写成 compatibility failure。</td></tr>
+        <tr><td>mismatch 证明模型经常大面积崩溃。</td><td>chunk-level rate 并不支持这种表述。</td><td>更准确地说：mismatch 是可定位、可分型、和 cue mechanism 有关的局部风险。</td></tr>
+      </tbody></table>
+    </section>
+
+    <section>
+      <h2>下一步优先补强</h2>
+      <table><thead><tr><th>优先级</th><th>任务</th><th>产物</th><th>目的</th></tr></thead><tbody>
+        <tr><td>P0</td><td>BSRNN continuation checkpoint sweep</td><td>USEF / TFMap / Context 的新 checkpoint 在 normal/basic、similar-speaker v3 与 quality-first similar-content v3 上重跑。</td><td>判断 18epoch 的 drift 是否由 under-trained backbone 放大，并避免用弱 backbone 判断 cue 上限。</td></tr>
+        <tr><td>P0</td><td>quality-first v3 paired tail attribution</td><td>按同一 utterance 比较 Pretrained USEF 与 Pretrained TFMap+Context 的 USEF-tail-corrected、both-tail、TFMap+Context-tail-only、neither-tail 四类样本。</td><td>解释为什么 TFMap+Context 在 content-conflict v3 上比 USEF 更稳。</td></tr>
+        <tr><td>P1</td><td>content-side mechanism probe</td><td>导出 USEF / TFMap+Context 在 v3 上的 cue ambiguity、attention entropy、persistent ambiguity，并与 content confirmed drift 对齐。</td><td>判断 content conflict 下哪些 cue ambiguity 会转化为 output drift。</td></tr>
+        <tr><td>P1</td><td>solution 设计</td><td>global reliability gate / cue conflict detector / hard-tail curriculum 的实验草案。</td><td>从诊断指标转向可提升模型的训练或结构方法。</td></tr>
+      </tbody></table>
+      <div class="note">Pretrained USEF 的 SI-SDR / SI-SDRi 已完成补算；旧 similar-content v3 quick screening 已归档，不再作为正式推理结果。后续 BSRNN checkpoint 选择应直接面向 quality-first v3 全量复核。</div>
+    </section>
+
+    <section>
+      <h2>BSRNN 最新 Checkpoint Screening</h2>
+      <p>筛查目标是判断继续训练后的 USEF / TFMap / Context checkpoint 是否已经足够好。normal/basic 和 similar-speaker v3 的趋势仍可参考；旧 similar-content v3 partial 结果已撤下。</p>
+      <table><thead><tr><th>Cue</th><th>Dataset</th><th>已解析输出数</th><th>Output SI-SNR mean</th><th>SI-SNRi mean</th><th>SI-SNRi &lt; 0</th><th>初步判断</th></tr></thead><tbody>
+        <tr><td>USEF</td><td>normal/basic</td><td>1000</td><td>12.02</td><td>12.02</td><td>1.70%</td><td>较 18epoch normal/basic 约 11.0 有提升。</td></tr>
+        <tr><td>TFMap</td><td>normal/basic</td><td>1000</td><td>10.95</td><td>10.95</td><td>4.90%</td><td>较 18epoch 约 8.98 明显提升。</td></tr>
+        <tr><td>Context</td><td>normal/basic</td><td>2000</td><td>10.10</td><td>10.10</td><td>6.80%</td><td>接近旧结果，提升不明显。</td></tr>
+        <tr><td>USEF</td><td>similar-speaker v3 0 dB</td><td>1000</td><td>10.40</td><td>10.39</td><td>4.60%</td><td>较 18epoch v3 0 dB 约 9.46 小幅提升，speaker side 仍最稳。</td></tr>
+        <tr><td>TFMap</td><td>similar-speaker v3 0 dB</td><td>1000</td><td>7.92</td><td>7.92</td><td>10.10%</td><td>较旧 TFMap 约 6.22 有提升，但仍明显弱于 USEF。</td></tr>
+        <tr><td>Context</td><td>similar-speaker v3 0 dB</td><td>2000</td><td>6.18</td><td>6.18</td><td>16.35%</td><td>与旧 Context / TFMap 6.2 左右接近，hard speaker 泛化较弱。</td></tr>
+        <tr><td>USEF</td><td>quality-first similar-content v3</td><td>5256</td><td>-0.16</td><td>-0.21</td><td>41.11%</td><td>已完成当前 BSRNN v3 全量；后续需用更强 checkpoint 复核。</td></tr>
+        <tr><td>Context</td><td>quality-first similar-content v3</td><td>5256</td><td>-1.92</td><td>-1.97</td><td>44.35%</td><td>已完成当前 BSRNN v3 全量；后续需用更强 checkpoint 复核。</td></tr>
+      </tbody></table>
+      <div class="note">初步训练判断：继续训练确实改善了 normal/basic 和 speaker-side hard set，尤其 TFMap 的 normal/basic 提升明显。content-conflict 方向已经用 quality-first v3 完成一轮评估；下一步应使用更强 BSRNN checkpoint 复核。</div>
+    </section>
+
+    <section>
+      <h2>Hard Similar-Speaker Stress Test</h2>
+      <p>Hard similar-speaker v2/v3 已完成构造、pretrained USEF-TFGridNet 全量推理和 speaker-side local diagnostic。v2 主要提高 speaker-level similarity；v3 在 v2 的基础上加入 utterance-level acoustic matching，并额外加入 target -5 dB 条件。诊断口径与 v1 speaker-side 完全对齐，因此可以直接和 normal/easy reference 比较。</p>
+      <table><thead><tr><th>Condition</th><th>n</th><th>SI-SNRi mean</th><th>Speaker Mismatch (1s)</th><th>Speaker Confirmed Drift (1s)</th><th>Any Mismatch Case</th><th>Any Confirmed Drift Case</th><th>Persistent Confirmed Drift Case</th></tr></thead><tbody>
+        <tr><td>v1 normal/easy reference</td><td>6000</td><td>15.90</td><td>0.0499</td><td>0.0388</td><td>0.1237</td><td>0.0510</td><td>0.0497</td></tr>
+        <tr><td>v2, 0 dB</td><td>6000</td><td>15.91</td><td>0.0603</td><td>0.0406</td><td>0.1843</td><td>0.0565</td><td>0.0535</td></tr>
+        <tr><td>v2, -3 dB</td><td>6000</td><td>17.83</td><td>0.0562</td><td>0.0354</td><td>0.1832</td><td>0.0503</td><td>0.0462</td></tr>
+        <tr><td>v3, 0 dB</td><td>6000</td><td>15.94</td><td>0.0621</td><td>0.0385</td><td>0.2258</td><td>0.0552</td><td>0.0525</td></tr>
+        <tr><td>v3, -3 dB</td><td>6000</td><td>17.89</td><td>0.0567</td><td>0.0309</td><td>0.2263</td><td>0.0468</td><td>0.0440</td></tr>
+        <tr><td>v3, -5 dB</td><td>6000</td><td>19.10</td><td>0.0541</td><td>0.0268</td><td>0.2373</td><td>0.0420</td><td>0.0403</td></tr>
+      </tbody></table>
+      <div class="note">阶段结论：v3 比 v2 更能提高 Any Mismatch Case，说明 utterance-level acoustic matching 确实让局部 speaker attribution 边界更紧；但严格的 waveform-confirmed drift 没有明显升高，甚至随 target SIR 降低略降。这说明强 pretrained USEF-TFGridNet 在 speaker-side 仍然很稳，当前 v2/v3 更像是提高了 verifier disagreement，而不是造成大规模 target/interferer drift。</div>
+      <div class="note">传统指标也支持这个解释：-3 / -5 dB 条件下 SI-SNRi 更高，不代表输出绝对质量更好，而是因为 Mixture SI-SNR baseline 更低。v3 -5 dB 的 SI-SNRi mean 为 19.10，但 Output SI-SNR mean 为 14.00，低于 0 dB 条件的 15.83。因此后续报告 similar-speaker hard set 时，应同时展示 SI-SNRi、Output SI-SNR 和 Mixture SI-SNR baseline。</div>
+      <div class="warn">下一步如果继续 speaker-side，应从“全局说话人相似”转向“局部冲突”：短 enrollment / low-coverage enrollment、target sparse 或 absent chunk、局部 interferer dominance，以及 speaker identity 与 fine-grained cue 明确冲突的样本。否则继续堆 similar speaker 版本，边际收益可能不大。</div>
+    </section>
+
+    <section>
+      <h2>Solution 方向</h2>
+      <table><thead><tr><th>方向</th><th>核心想法</th><th>评估指标</th></tr></thead><tbody>
+        <tr><td>mismatch-aware detector</td><td>融合 speaker/content gap、Target-Interferer SI-SDR Gap 和 SI-SNRi tail，输出 chunk-level / case-level risk score。</td><td>Confirmed Drift detection recall / precision，高风险 case 排名质量。</td></tr>
+        <tr><td>cue reliability gate</td><td>当 fine-grained cue 局部不可靠时，降低其对 separator 的影响。</td><td>降低 high-SI-SNRi-with-drift cases，同时保持 SI-SNRi。</td></tr>
+        <tr><td>verifier-guided local constraint</td><td>在高风险 chunk 上加入 speaker/content 一致性约束。</td><td>降低 Confirmed Drift (1s) 和 Persistent Confirmed Drift Case。</td></tr>
+        <tr><td>hard negative curriculum</td><td>把 similar-speaker / quality-first v3 等 hard negative 加入训练或重加权。</td><td>speaker-side 和 content-side case-level drift 同时下降。</td></tr>
+      </tbody></table>
+    </section>
+  </main>
+</body>
+</html>
+
+
+
+

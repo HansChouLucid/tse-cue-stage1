@@ -1,0 +1,153 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>实验与结果</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">Audio-only TSE Cue</div>
+    <div class="small">Formal presentation report<br>2026-06-09</div>
+    <nav>
+      <a href="index.html">总览</a>
+      <a href="01_background_data.html">背景与数据</a>
+      <a class="active" href="02_experiments_results.html">实验与结果</a>
+      <a href="03_sisnri_mismatch.html">联合解释</a>
+      <a href="05_anomaly_explanations.html">异常解释</a>
+      <a href="06_case_study.html">Case Study</a>
+      <a href="07_mechanism_probe.html">机制验证</a>
+      <a href="04_conclusion_next.html">结论与计划</a>
+      <a href="08_research_framing_plan.html">研究思路与计划</a>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <header class="hero">
+      <div class="eyebrow">Experiments</div>
+      <h1>模型设置与主线实验结果</h1>
+      <p>本页按照三个实验组织：Pretrained USEF-TFGridNet、Pretrained REAL-TSE TFMap+Context、BSRNN controlled cue comparison。每个实验内部再分 speaker side 和 content side，content-side 统一使用 quality-first similar-content v3 的全量结果。</p>
+    </header>
+
+    <section>
+      <h2>实验矩阵</h2>
+      <table><thead><tr><th>实验</th><th>模型 / backbone</th><th>Cue</th><th>训练来源</th><th>覆盖数据</th><th>当前状态</th></tr></thead><tbody>
+        <tr><td>实验一</td><td>Pretrained USEF-TFGridNet</td><td>USEF</td><td>公开强预训练模型，作为 strongest single-USEF reference。</td><td>normal/easy、similar-speaker v2/v3、quality-first similar-content v3</td><td>全量推理和 local diagnostic 已完成。</td></tr>
+        <tr><td>实验二</td><td>Pretrained REAL-TSE TFMap+Context</td><td>TFMap+Context</td><td>WeSep / REAL-TSE 公开 checkpoint，Libri2Mix-100 风格训练。</td><td>normal/easy、similar-speaker v2/v3、quality-first similar-content v3</td><td>全量推理和 local diagnostic 已完成。</td></tr>
+        <tr><td>实验三</td><td>BSRNN controlled backbone</td><td>USEF / TFMap / Context</td><td>本地 LibriMix-100 风格训练。18epoch 版本偏弱，后续继续训练。</td><td>normal/basic、similar-speaker v1/v3、quality-first similar-content v3</td><td>v3 结果可作为 weak-backbone stress 参考，不能作为最终 cue 上限。</td></tr>
+      </tbody></table>
+      <div class="warn"><b>content-side 口径：</b>旧 similar-content v2 和旧 similar-content v3 的推理结果、local diagnostic、case study 已移入垃圾归档，不再作为正式证据。本页 content-side 只使用 quality-first v3：5256 条 final rows，Whisper large-v3 ASR pass rate 99.98%。</div>
+      <div class="note"><b>traditional metrics 表格口径：</b>正式汇报页只展示最核心的 mean 指标和失败比例。为避免重复列堆叠，<code>Output SI-SNR / SI-SNRi</code> 表示“输出绝对质量 / 相对 mixture 的提升”，<code>Output SI-SDR / SI-SDRi</code> 同理；median 等完整原始列仍保留在本地结果文件中。</div>
+    </section>
+
+    <section>
+      <h2>实验一：Pretrained USEF-TFGridNet</h2>
+      <p>USEF-TFGridNet 是强 single-USEF 参照。它在 speaker side 很稳；在 quality-first v3 content conflict 中仍保持较高平均 SI-SNRi，但 tail drift 明显高于 TFMap+Context。</p>
+
+      <h3>Speaker Side</h3>
+      <h4>Traditional Metrics</h4>
+      <table><thead><tr><th>Condition</th><th>n</th><th>Mixture SI-SNR</th><th>Output SI-SNR / SI-SNRi</th><th>Output SI-SDR / SI-SDRi</th><th>SI-SNRi &lt; 0</th></tr></thead><tbody>
+        <tr><td>normal/easy reference</td><td>6000</td><td>0.00</td><td>15.90 / 15.90</td><td>14.06 / 14.06</td><td>0.0517</td></tr>
+        <tr><td>similar-speaker v2, 0 dB</td><td>6000</td><td>-0.07</td><td>15.84 / 15.91</td><td>10.66 / 10.73</td><td>0.0547</td></tr>
+        <tr><td>similar-speaker v2, -3 dB</td><td>6000</td><td>-3.07</td><td>14.76 / 17.83</td><td>10.79 / 13.86</td><td>0.0463</td></tr>
+        <tr><td>similar-speaker v3, 0 dB</td><td>6000</td><td>-0.11</td><td>15.83 / 15.94</td><td>10.80 / 10.91</td><td>0.0522</td></tr>
+        <tr><td>similar-speaker v3, -3 dB</td><td>6000</td><td>-3.11</td><td>14.79 / 17.89</td><td>10.99 / 14.09</td><td>0.0438</td></tr>
+        <tr><td>similar-speaker v3, -5 dB</td><td>6000</td><td>-5.11</td><td>14.00 / 19.10</td><td>11.14 / 16.25</td><td>0.0405</td></tr>
+      </tbody></table>
+
+      <h4>Local Diagnostic</h4>
+      <table><thead><tr><th>Condition</th><th>Speaker Mismatch (1s)</th><th>Speaker Confirmed Drift (1s)</th><th>Any Mismatch Case</th><th>Any Confirmed Drift Case</th><th>Persistent Confirmed Drift Case</th><th>Mean Target-Interferer SI-SDR Gap</th></tr></thead><tbody>
+        <tr><td>normal/easy reference</td><td>0.0499</td><td>0.0388</td><td>0.1237</td><td>0.0510</td><td>0.0497</td><td>49.57</td></tr>
+        <tr><td>similar-speaker v2, 0 dB</td><td>0.0603</td><td>0.0406</td><td>0.1843</td><td>0.0565</td><td>0.0535</td><td>46.28</td></tr>
+        <tr><td>similar-speaker v2, -3 dB</td><td>0.0562</td><td>0.0354</td><td>0.1832</td><td>0.0503</td><td>0.0462</td><td>46.28</td></tr>
+        <tr><td>similar-speaker v3, 0 dB</td><td>0.0621</td><td>0.0385</td><td>0.2258</td><td>0.0552</td><td>0.0525</td><td>-</td></tr>
+        <tr><td>similar-speaker v3, -3 dB</td><td>0.0567</td><td>0.0309</td><td>0.2263</td><td>0.0468</td><td>0.0440</td><td>-</td></tr>
+        <tr><td>similar-speaker v3, -5 dB</td><td>0.0541</td><td>0.0268</td><td>0.2373</td><td>0.0420</td><td>0.0403</td><td>-</td></tr>
+      </tbody></table>
+      <div class="note">Speaker-side 结论：similar-speaker v2/v3 提高了 case-level speaker mismatch，但 waveform-confirmed drift 没有同步放大。强 USEF 对当前 similar-speaker stress 很稳，hard pair 主要提高局部不确定性，而不是造成大面积 target/interferer swap。</div>
+
+      <h3>Content Side：quality-first similar-content v3</h3>
+      <table><thead><tr><th>n</th><th>Output SI-SNR / SI-SNRi</th><th>Output SI-SDR / SI-SDRi</th><th>SI-SNRi &lt; 0</th><th>2-verifier Confirmed Drift (chunk)</th><th>Any Drift Case</th><th>Persistent Drift Case</th></tr></thead><tbody>
+        <tr><td>5256</td><td>12.28 / 12.24</td><td>10.61 / 10.57</td><td>0.126</td><td>0.102</td><td>0.128</td><td>0.123</td></tr>
+      </tbody></table>
+      <div class="note">USEF 在新版 v3 上仍然强，但 content-conflict tail 不小：Low SI-SNRi + High Drift 为 633 / 5256。SI-SDR / SI-SDRi 已按 8 kHz output 对齐重采样后补算，SI-SDRi mean 为 10.57 dB。</div>
+    </section>
+
+    <section>
+      <h2>实验二：Pretrained REAL-TSE TFMap+Context</h2>
+      <p>TFMap+Context 是当前最重要的 cue-composition baseline。它在 quality-first v3 上同时取得更高平均 SI-SNRi 和更低 content drift，说明它不是弱 baseline，而是需要重点解释的强参照。</p>
+
+      <h3>Speaker Side</h3>
+      <h4>Traditional Metrics</h4>
+      <table><thead><tr><th>Condition</th><th>n</th><th>Output SI-SNR / SI-SNRi</th><th>Output SI-SDR / SI-SDRi</th><th>SI-SNRi &lt; 0</th></tr></thead><tbody>
+        <tr><td>normal/easy reference</td><td>6000</td><td>15.69 / 15.69</td><td>15.69 / 15.69</td><td>0.0348</td></tr>
+        <tr><td>similar-speaker v2, 0 dB</td><td>6000</td><td>14.64 / 14.64</td><td>14.64 / 14.64</td><td>0.0557</td></tr>
+        <tr><td>similar-speaker v2, -3 dB</td><td>6000</td><td>13.22 / 16.23</td><td>13.22 / 16.23</td><td>0.0522</td></tr>
+        <tr><td>similar-speaker v3, 0 dB</td><td>6000</td><td>14.33 / 14.33</td><td>14.33 / 14.33</td><td>0.0587</td></tr>
+        <tr><td>similar-speaker v3, -3 dB</td><td>6000</td><td>13.04 / 16.04</td><td>13.04 / 16.04</td><td>0.0543</td></tr>
+        <tr><td>similar-speaker v3, -5 dB</td><td>6000</td><td>12.07 / 17.07</td><td>12.07 / 17.07</td><td>0.0538</td></tr>
+      </tbody></table>
+
+      <h4>Local Diagnostic</h4>
+      <table><thead><tr><th>Condition</th><th>Speaker Mismatch (2-verifier, 1s)</th><th>Speaker Confirmed Drift (2-verifier, 1s)</th><th>Waveform Prefers Interferer (1s)</th><th>Any Mismatch Case</th><th>Any Confirmed Drift Case</th><th>Persistent Confirmed Drift Case</th><th>Mean Target-Interferer SI-SDR Gap</th></tr></thead><tbody>
+        <tr><td>similar-speaker v2, 0 dB</td><td>0.0494</td><td>0.0463</td><td>0.0506</td><td>0.0735</td><td>0.0595</td><td>0.0560</td><td>46.30</td></tr>
+        <tr><td>similar-speaker v2, -3 dB</td><td>0.0488</td><td>0.0455</td><td>0.0497</td><td>0.0763</td><td>0.0592</td><td>0.0558</td><td>44.77</td></tr>
+        <tr><td>similar-speaker v3, 0 dB</td><td>0.0494</td><td>0.0456</td><td>0.0503</td><td>0.0833</td><td>0.0625</td><td>0.0565</td><td>45.71</td></tr>
+        <tr><td>similar-speaker v3, -3 dB</td><td>0.0481</td><td>0.0449</td><td>0.0486</td><td>0.0827</td><td>0.0623</td><td>0.0572</td><td>44.21</td></tr>
+        <tr><td>similar-speaker v3, -5 dB</td><td>0.0500</td><td>0.0459</td><td>0.0494</td><td>0.0898</td><td>0.0617</td><td>0.0567</td><td>43.06</td></tr>
+      </tbody></table>
+
+      <h3>Content Side：quality-first similar-content v3</h3>
+      <table><thead><tr><th>n</th><th>Output SI-SNR / SI-SNRi</th><th>Output SI-SDR / SI-SDRi</th><th>SI-SNRi &lt; 0</th><th>2-verifier Confirmed Drift (chunk)</th><th>Any Drift Case</th><th>Persistent Drift Case</th></tr></thead><tbody>
+        <tr><td>5256</td><td>15.31 / 15.27</td><td>15.31 / 15.27</td><td>0.044</td><td>0.035</td><td>0.044</td><td>0.042</td></tr>
+      </tbody></table>
+      <div class="note">TFMap+Context 在新版 v3 上明显优于 single USEF：SI-SNRi mean 高 3.02 dB，Persistent Drift Case 从 0.123 降到 0.042。这说明低层 TFMap 与 speaker-encoder Context 的组合可能更能过滤 enrollment-content conflict。</div>
+    </section>
+
+    <section>
+      <h2>实验三：BSRNN Controlled Cue Comparison</h2>
+      <p>BSRNN 用于 controlled cue ablation：同一 backbone 下比较 USEF / TFMap / Context。当前 v3 结果来自偏弱 BSRNN，因此重点用于观察 weak backbone 如何放大 content conflict，而不是给三种 cue 下最终结论。</p>
+
+      <h3>Selected Checkpoints</h3>
+      <table><thead><tr><th>Cue</th><th>推荐 checkpoint</th><th>best val loss</th><th>说明</th></tr></thead><tbody>
+        <tr><td>USEF</td><td><code>usef_only_bsrnn_stage2_stabilize_lr2e6_3ep_a800_gpu1_bs8_20260608/models/checkpoint_2.pt</code></td><td>-11.3133</td><td>当前 USEF 最优候选。</td></tr>
+        <tr><td>TFMap</td><td><code>tfmap_only_bsrnn_stage2_A_lr3e6_5ep_a800_gpu0_bs8_20260608/models/checkpoint_4.pt</code></td><td>-10.6642</td><td>当前 TFMap 最优候选。</td></tr>
+        <tr><td>Context</td><td><code>context_only_bsrnn_continue_from_total17_plus10_lr1e5_dualA100_ddp2_bs4_20260608/models/checkpoint_9.pt</code></td><td>-10.4613</td><td>当前 Context 最优候选；仍建议继续训练或复核。</td></tr>
+      </tbody></table>
+
+      <h3>Speaker Side</h3>
+      <h4>normal/basic vs similar-speaker v1</h4>
+      <table><thead><tr><th>Cue</th><th>Condition</th><th>n</th><th>Output SI-SNR</th><th>SI-SNRi mean</th><th>SI-SNRi &lt; 0</th><th>Speaker Confirmed Drift (1s)</th><th>Any Confirmed Drift Case</th><th>Persistent Confirmed Drift Case</th></tr></thead><tbody>
+        <tr><td>USEF</td><td>normal/basic fixed-enroll</td><td>2000</td><td>11.00</td><td>11.00</td><td>0.0285</td><td>0.0147</td><td>0.0315</td><td>0.0220</td></tr>
+        <tr><td>USEF</td><td>similar-speaker v1</td><td>12000</td><td>9.69</td><td>9.69</td><td>0.0483</td><td>0.0218</td><td>0.0579</td><td>0.0329</td></tr>
+        <tr><td>TFMap</td><td>normal/basic fixed-enroll</td><td>2000</td><td>8.99</td><td>8.98</td><td>0.0640</td><td>0.0442</td><td>0.0955</td><td>0.0635</td></tr>
+        <tr><td>TFMap</td><td>similar-speaker v1</td><td>12000</td><td>6.29</td><td>6.29</td><td>0.1275</td><td>0.0677</td><td>0.1827</td><td>0.1069</td></tr>
+        <tr><td>Context</td><td>normal/basic fixed-enroll</td><td>2000</td><td>9.94</td><td>9.93</td><td>0.0665</td><td>0.0418</td><td>0.0810</td><td>0.0605</td></tr>
+        <tr><td>Context</td><td>similar-speaker v1</td><td>12000</td><td>5.71</td><td>5.71</td><td>0.1824</td><td>0.1092</td><td>0.2323</td><td>0.1593</td></tr>
+      </tbody></table>
+
+      <h4>similar-speaker v3 full-set</h4>
+      <table><thead><tr><th>Cue</th><th>Condition</th><th>Output SI-SNR</th><th>SI-SNRi mean</th><th>SI-SNRi &lt; 0</th><th>Chunk Confirmed Drift</th><th>Any Confirmed Drift Case</th><th>Confirmed Drift ≥ 20% Case</th><th>Mean Target-Interferer SI-SDR Gap</th></tr></thead><tbody>
+        <tr><td>USEF</td><td>v3 0 dB</td><td>9.46</td><td>9.46</td><td>0.0487</td><td>0.032</td><td>0.077</td><td>0.050</td><td>30.35</td></tr>
+        <tr><td>USEF</td><td>v3 -3 dB</td><td>8.05</td><td>11.05</td><td>0.0387</td><td>0.035</td><td>0.080</td><td>0.054</td><td>28.66</td></tr>
+        <tr><td>USEF</td><td>v3 -5 dB</td><td>7.15</td><td>12.15</td><td>0.0343</td><td>0.037</td><td>0.080</td><td>0.058</td><td>27.59</td></tr>
+        <tr><td>TFMap</td><td>v3 0 dB</td><td>6.22</td><td>6.22</td><td>0.1277</td><td>0.079</td><td>0.210</td><td>0.138</td><td>20.32</td></tr>
+        <tr><td>TFMap</td><td>v3 -3 dB</td><td>4.48</td><td>7.48</td><td>0.1283</td><td>0.109</td><td>0.258</td><td>0.187</td><td>17.46</td></tr>
+        <tr><td>TFMap</td><td>v3 -5 dB</td><td>3.37</td><td>8.37</td><td>0.1315</td><td>0.132</td><td>0.271</td><td>0.217</td><td>15.68</td></tr>
+        <tr><td>Context</td><td>v3 0 dB</td><td>6.20</td><td>6.20</td><td>0.1625</td><td>0.109</td><td>0.231</td><td>0.169</td><td>21.60</td></tr>
+        <tr><td>Context</td><td>v3 -3 dB</td><td>4.56</td><td>7.56</td><td>0.1655</td><td>0.137</td><td>0.261</td><td>0.209</td><td>19.14</td></tr>
+        <tr><td>Context</td><td>v3 -5 dB</td><td>3.32</td><td>8.32</td><td>0.1755</td><td>0.163</td><td>0.277</td><td>0.237</td><td>17.15</td></tr>
+      </tbody></table>
+
+      <h3>Content Side：quality-first similar-content v3</h3>
+      <table><thead><tr><th>Cue</th><th>n</th><th>Output SI-SNR / SI-SNRi</th><th>Output SI-SDR / SI-SDRi</th><th>SI-SNRi &lt; 0</th><th>2-verifier Confirmed Drift (chunk)</th><th>Any Drift Case</th><th>Persistent Drift Case</th></tr></thead><tbody>
+        <tr><td>USEF</td><td>5256</td><td>-0.16 / -0.21</td><td>-0.16 / -0.21</td><td>0.411</td><td>0.296</td><td>0.447</td><td>0.400</td></tr>
+        <tr><td>TFMap</td><td>5256</td><td>-1.26 / -1.31</td><td>-1.26 / -1.31</td><td>0.428</td><td>0.340</td><td>0.457</td><td>0.423</td></tr>
+        <tr><td>Context</td><td>5256</td><td>-1.92 / -1.97</td><td>-1.92 / -1.97</td><td>0.443</td><td>0.348</td><td>0.466</td><td>0.433</td></tr>
+      </tbody></table>
+      <div class="note">BSRNN 在新版 v3 上整体仍是 weak-backbone 状态：三种 cue 的 SI-SNRi mean 都接近或低于 0，case-level persistent content drift 达到 0.400-0.433。因此这组结果主要说明训练不足的 separator 会把 content conflict 放大成 failure tail，不能直接作为 cue 机制优劣的最终判断。</div>
+    </section>
+  </main>
+</body>
+</html>

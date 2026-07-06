@@ -1,0 +1,147 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>背景与数据</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">Audio-only TSE Cue</div>
+    <div class="small">Formal presentation report<br>2026-06-05</div>
+    <nav>
+      <a href="index.html">总览</a>
+      <a class="active" href="01_background_data.html">背景与数据</a>
+      <a href="02_experiments_results.html">实验与结果</a>
+      <a href="03_sisnri_mismatch.html">联合解释</a>
+      <a href="05_anomaly_explanations.html">异常解释</a>
+      <a href="06_case_study.html">Case Study</a>
+      <a href="07_mechanism_probe.html">机制验证</a>
+      <a href="04_conclusion_next.html">结论与计划</a>
+      <a href="08_research_framing_plan.html">研究思路与计划</a>
+    </nav>
+  </aside>
+  <main class="content">
+    <header class="hero">
+      <div class="eyebrow">Background & Data</div>
+      <h1>研究背景、数据构造与指标体系</h1>
+      <p>本页说明本阶段研究为什么不只看传统 SI-SNRi，以及 hard condition、local verifier、Confirmed Drift 和 global-cue reliability calibration 如何构成一条完整证据链。</p>
+    </header>
+
+    <section>
+      <h2>研究背景</h2>
+      <p>Target Speech Extraction 的目标是在混合语音中，根据给定 cue 提取目标说话人的语音。对于 audio-only cue，尤其是 USEF / TFMap / Context 这类 fine-grained cue，模型可以利用 reference 的局部时序、时频和上下文信息进行更精细的目标抽取，但这些局部证据同时也携带 phonetic content、局部能量、说话状态和声学相似性等非身份因素。</p>
+      <p>因此，本研究的核心并不是简单证明 fine-grained cue 会经常出错，而是分析它在 hard-tail、similar speaker、similar content 和 cue-conflict 条件下是否需要可靠性校准。global cue 在这里不被定义为另一个直接参与分离的 feature，而是被定义为跨时间更稳定的 identity prior / verifier，用于检测和约束 fine-grained cue 的局部漂移。</p>
+      <p>这种局部错误不一定显著拉低整句平均 SI-SNRi，尤其当错误只发生在短时间片段时，传统指标可能把它平均掉。因此，本阶段实验把传统分离指标和局部 attribution diagnostic 放在同一个分析框架里，为下一阶段的 global-verifier-guided local calibration 提供依据。</p>
+    </section>
+
+    <section>
+      <h2>修正后的研究主线</h2>
+      <table><thead><tr><th>层级</th><th>研究命题</th><th>当前证据</th><th>下一步作用</th></tr></thead><tbody>
+        <tr><td>Fine-grained cue</td><td>作为 separation 主体，提供局部抽取能力，但局部证据不是天然可靠。</td><td>controlled BSRNN 中 USEF / TFMap / Context 在 speaker-side 和 content-side drift 行为不同。</td><td>保留其主体地位，不把方法退化成普通 global-only TSE。</td></tr>
+        <tr><td>Local diagnostic</td><td>用 1s chunk verifier、Target-Interferer SI-SDR Gap 和 case-level drift 判断局部归因是否偏向 interferer。</td><td>clean-source sanity、multi-verifier、full-set BSRNN / pretrained USEF diagnostic。</td><td>定义 high-risk chunk / hard-tail case，作为后续训练或校准目标。</td></tr>
+        <tr><td>Global cue</td><td>作为 identity prior / verifier，而不是简单拼接到 separator 的额外 cue。</td><td>强 USEF 说明强模型可能已经隐式学到部分稳定机制；弱 BSRNN 和 TFMap / Context 暴露更多漂移。</td><td>用于 risk-aware gate、hard-negative margin、chunk-level identity consistency。</td></tr>
+        <tr><td>Solution target</td><td>不以超过强 USEF 的 full-set SI-SNRi 为唯一目标，而以降低 hard-tail drift、保持 normal 不退化为主要收益。</td><td>low SI-SNRi tail 与 drift 高度对齐；high SI-SNRi drift 数量少但有解释价值。</td><td>评估方法时同时看 SI-SNRi、Confirmed Drift、Any/Persistent Drift Case 和 ASR readable evidence。</td></tr>
+      </tbody></table>
+    </section>
+
+    <section>
+      <h2>预训练模型与训练数据来源</h2>
+      <p>本报告把公开预训练模型当作强参照使用，因此需要先说明它们的训练来源。这里采用“现有论文 / README 可确认的信息”作为证据边界；如果公开 checkpoint 的完整训练日志没有给出，则不把推测写成确定结论。</p>
+      <table><thead><tr><th>模型</th><th>现有文档可确认的训练数据</th><th>是否发现 similar-speaker 强化训练证据</th><th>对本报告的解释意义</th></tr></thead><tbody>
+        <tr><td>Pretrained USEF-TFGridNet</td><td>USEF-TSE 论文在 LibriMix / Libri2Mix / Libri3Mix 上评估，并使用 Libri2Mix / Libri3Mix 的 100-hour training subsets；文中还说明训练阶段未使用 dynamic mixing 或额外 data augmentation，训练语音被截断到 4s。</td><td>目前没有在论文文本或本地公开材料中发现“按 speaker embedding mining 的 hard similar-speaker augmentation”证据。论文确实报告了 same-gender / speaker confusion 场景，这说明模型在标准 LibriMix 同性别混合上接受过评估，但这不等价于我们 v2/v3 的 hard similar-speaker 训练强化。</td><td>因此，USEF 在 similar-speaker 上强，比较稳妥的解释是：强 backbone + USEF 表示 + LibriMix 同性别训练/评估已经带来较强 speaker discrimination；不能直接归因于它见过我们构造的 hard similar-speaker 数据。</td></tr>
+        <tr><td>REAL-TSE TFMap+Context</td><td>WeSep REAL-TSE README 公开了 <code>tfmap_context_100</code> 和 <code>tfmap_context_causal_100</code> checkpoint；Multi-Level Speaker Representation 论文说明模型基于 clean Libri2Mix-100，训练集约 251 speakers / 13900 utterances，validation/test 各 3000 utterances 且说话人不重叠。</td><td>目前没有发现它使用我们 hard similar-speaker v2/v3 或 quality-first similar-content v3 的证据。</td><td>TFMap+Context 是重要 cue-composition baseline；新版 v3 中已显示它比 single USEF 更能减少 content-conflict tail。</td></tr>
+        <tr><td>本地 BSRNN 18epoch</td><td>训练数据为 normal/basic LibriMix-100 风格数据；当前 18epoch 不是完全收敛版本，后续正在继续训练 USEF / TFMap / Context。</td><td>没有 hard similar-speaker 或 similar-content v3 训练强化。</td><td>BSRNN 18epoch 更适合作为 controlled cue ablation，而不是强 SOTA baseline。它能放大 cue 差异，但弱 backbone failure 需要和强预训练模型区分解释。</td></tr>
+      </tbody></table>
+      <div class="note">当前最稳妥的汇报口径：Pretrained USEF-TFGridNet 的 similar-speaker 稳定性是一个真实观察，但不能说它“因为接受过我们的 similar-speaker 强化训练所以正常”。现有证据只支持它接受过标准 LibriMix 100h 训练，并在 same-gender / speaker-confusion 条件下被评估。</div>
+    </section>
+
+    <section>
+      <h2>数据构造</h2>
+      <table><thead><tr><th>数据条件</th><th>构造方式</th><th>压力源</th><th>报告角色</th></tr></thead><tbody>
+        <tr><td>normal/basic clean test</td><td>普通 Libri2Mix clean test。本轮 protocol-matched baseline 取 1000 mixtures / 2000 target tasks，并使用 fixed enrollment 构造 speaker prototype。</td><td>低压力普通条件</td><td>作为 hard condition 的背景风险参照。</td></tr>
+        <tr><td>similar-speaker v2 / v3</td><td>从 LibriSpeech / LibriMix 元数据中选择 target speaker 与 interferer speaker 更相似的组合，构造二人混合；enrollment 避开当前 target utterance。v2 使用 same-gender + top-similar speaker mining；v3 在 v2 基础上进一步加入 utterance-level acoustic matching，并增加 -5 dB SIR。</td><td>speaker identity stress</td><td>speaker-side hard condition 主线。</td></tr>
+        <tr><td>similar-content v1</td><td>从自然语音中筛选文本或词片段较接近的 target / interferer pair。</td><td>较弱 content stress</td><td>历史 sanity / 弱参考，不作为 content-side 主结论。</td></tr>
+        <tr><td>similar-content v2 TTS</td><td>历史版本：基于 finalized v2 manifest，用 target-like transcript 和 interferer voice 生成 synthetic interferer，再与 target clean source 混合。</td><td>content attribution stress</td><td><b>已归档，不作为正式主线证据。</b>后续检查发现 all-uppercase TTS 文本导致生成语音可读性严重不稳定。</td></tr>
+        <tr><td>similar-content 旧 v3 TTS enrollment-conflict</td><td>历史版本：保持 mixture 为自然 Libri2Mix，使用 target speaker prompt voice 合成 enrollment，使 enrollment 说出 mixture interferer transcript。</td><td>cue-content conflict stress</td><td><b>已归档，不作为正式主线证据。</b>旧版本存在 conflict 构造和 TTS 可读性问题。</td></tr>
+        <tr><td>similar-content quality-first v3</td><td>新版主线：mixture 保持自然 Libri2Mix；用 target speaker prompt voice 合成 enrollment；生成文本为自然化的 interferer transcript；生成后通过 ASR、speaker verifier、duration/RMS/clip sanity 过滤。</td><td>cue-content conflict stress</td><td>content-side 新主线。当前已完成 5256 条 final rows，并完成五组模型全量推理和 local diagnostic。</td></tr>
+      </tbody></table>
+      <div class="warn"><b>similar-content 口径更新：</b>旧 v2 和旧 v3 的结果已经从正式证据链撤下。旧 v2 的主要问题是 all-uppercase transcript 触发 F5-TTS 拼字/不可读现象；旧 v3 同时存在 conflict 构造错误和 TTS 可读性问题。后续 content-side 结论一律以 quality-first v3 为准。</div>
+    </section>
+
+    <section>
+      <h2>数据难度与质量校准</h2>
+      <p>本研究中的 hard dataset 不是为了制造任意低质量音频，而是为了在可控、可复现的条件下增加 cue attribution 的歧义。数据质量校准主要回答两个问题：第一，构造出的干扰是否真的接近目标 cue；第二，构造过程是否引入了会污染结论的音频质量问题。</p>
+
+      <h3>Similar Content v2 / 旧 v3 归档说明</h3>
+      <table><thead><tr><th>版本</th><th>发现的问题</th><th>当前处理</th></tr></thead><tbody>
+        <tr><td>v2 TTS</td><td>使用 all-uppercase transcript 直接喂给 F5-TTS，抽样 ASR sanity 暴露出明显拼字/不可读 artifact。</td><td>从正式 content-side 证据链撤下，保留到 archive 作为失败构造记录。</td></tr>
+        <tr><td>旧 v3 TTS</td><td>初版 conflict 构造不严格，曾出现 conflict_text 与 target_text 对齐错误；同时沿用了不利于 F5-TTS 的文本格式，ASR readability 不能支撑“高质量 content-conflict enrollment”。</td><td>从正式结果页撤下，不再引用旧推理和旧 local diagnostic。</td></tr>
+      </tbody></table>
+
+      <h3>Similar Content Quality-First v3</h3>
+      <p>新版 v3 仍然服务于原始 motivation：fine-grained enrollment cue 中携带的局部 content-like evidence，是否会把 separator 拉向 mixture 中说相似内容的干扰源。与旧版本不同，新版把数据质量作为第一约束：不再使用 all-uppercase 文本；不再直接信任生成结果；最终数据必须经过生成后筛选。</p>
+      <table><thead><tr><th>维度</th><th>当前状态</th><th>解释</th></tr></thead><tbody>
+        <tr><td>natural v3 覆盖率探测</td><td>自然 enrollment 与 interferer text 的强相似样本很少：Jaccard ≥ 0.25 仅 44 / 5980，Jaccard ≥ 0.30 仅 5 / 5980。</td><td>自然路径已降级为 coverage probe / archive，不再作为主线构造方案。</td></tr>
+        <tr><td>新版核心构造</td><td>计划 5630 条 quality-first enrollment-conflict tasks，最终通过质量筛选 5256 条。mixture 保持自然 Libri2Mix，target / interferer clean source 不变。</td><td>只替换 enrollment：让 target-speaker voice 说出 interferer transcript，直接制造 cue-content-to-interferer conflict。</td></tr>
+        <tr><td>source 关系</td><td>mixture target = 自然 target clean；mixture interferer = 自然 interferer clean；enrollment = target speaker prompt voice + interferer transcript 的 TTS 语音。</td><td>因此输出仍应提取自然 target source；如果模型被 enrollment 内容牵引，就可能局部偏向自然 interferer source。</td></tr>
+        <tr><td>质量优先改动</td><td>文本自然化为 lowercase sentence；F5-TTS 使用更稳的 nfe-step=64；prompt 选择更严格；生成后运行 ASR、speaker verifier、duration/RMS/clip sanity。</td><td>目标不是让 TTS 完美复读每个词，而是保证 synthetic enrollment 是自然、可用、接近真实 enrollment 的 target-voice cue。</td></tr>
+        <tr><td>smoke sanity</td><td>naturalized smoke20：WER mean 0.043、CER mean 0.012、token F1 mean 0.960；audio+ASR pass rate 0.90。</td><td>这说明旧版本的主要问题来自文本格式和生成流程，而不是 F5-TTS 路线本身必然不可用。</td></tr>
+        <tr><td>全量质量验证</td><td>Whisper large-v3：WER mean 0.033、CER mean 0.015、token F1 mean 0.971；ASR pass rate 99.98%。</td><td>相比旧 v2 / 旧 v3，新版 enrollment 的文本可读性已得到强得多的自动验证。</td></tr>
+        <tr><td>推理覆盖</td><td>已完成 Pretrained USEF-TFGridNet、Pretrained TFMap+Context、BSRNN USEF / TFMap / Context 的全量推理和 content local diagnostic。</td><td>正式 content-side 表格已在实验与结果页、case-study 页回填。</td></tr>
+      </tbody></table>
+      <div class="warn"><b>新版口径：</b>旧 v3 的 WER/CER、SI-SNRi 或 drift 数字仍不展示；正式报告只使用 quality-first v3 的全量质量筛选、全量推理和 local diagnostic。</div>
+
+      <h3>Similar Speaker v2 / v3</h3>
+      <table><thead><tr><th>维度</th><th>统计结果</th><th>解释</th></tr></thead><tbody>
+        <tr><td>v2 数据规模</td><td>v2 包含 0 dB 和 -3 dB 两个 SIR 条件，每个条件 6000 target tasks。</td><td>v2 是第一版 hard similar-speaker 全量数据，用于确认 same-gender + top-similar speaker mining 是否能提高 speaker-side mismatch。</td></tr>
+        <tr><td>v2 构造方式</td><td>从 LibriSpeech / LibriMix 元数据出发，优先选择与 target speaker 同性别、speaker embedding 更接近的 interferer speaker，并复用同一批 speaker pair 生成 0 dB / -3 dB 两个条件。</td><td>v2 的主要压力来自 speaker identity similarity；它已经比普通 LibriMix 更难，但没有显式约束 utterance-level 声学状态。</td></tr>
+        <tr><td>v3 数据规模</td><td>v3 包含 SIR 0 / -3 / -5 dB 三个条件，每个条件 6000 target tasks；created = 6000，read_skip = 0。</td><td>v3 在 v2 基础上增加 -5 dB，使 interferer 相对 target 更强，更适合观察 tail failure。</td></tr>
+        <tr><td>v3 说话人筛选</td><td>same-gender required；top-rank = 2；rank counts: rank-1 = 5598，rank-2 = 402。</td><td>绝大多数样本使用最相似候选说话人，同性别约束避免性别差异把任务变简单。</td></tr>
+        <tr><td>v3 speaker 相似度</td><td>speaker similarity mean 0.657，median 0.663，p10 0.608，p90 0.701。</td><td>这里的 0.66 是 speaker embedding cosine-like 分数，不是“只有 66% 相似”。在跨说话人的 clean LibriSpeech 条件下，same-gender top-neighbor 能达到 0.60-0.70 已经说明两者处在较近区域；但它仍不是极端同音色或同一说话人近邻，因此强 USEF 不被击穿是合理的。</td></tr>
+        <tr><td>v3 声学距离</td><td>acoustic distance mean 0.073，median 0.065，p10 0.029，p90 0.126。</td><td>v3 不只看 speaker embedding，也引入 duration、RMS、zero-crossing-rate 等轻量声学匹配，减少“speaker embedding 相似但这一句话声学状态差很远”的情况。</td></tr>
+        <tr><td>v3 相对 v2 的提升</td><td>v2 主要是 speaker-level hard mining；v3 = speaker-level hard mining + utterance acoustic matching + -5 dB SIR。</td><td>所以 v3 更像一个集中 stress test：它尽量让干扰说话人不仅“身份相似”，而且“当前语音片段的声学状态也接近”，同时在 -5 dB 中进一步提高干扰源能量。</td></tr>
+        <tr><td>配对覆盖</td><td>v3 unique undirected speaker pairs = 36；max pair count = 300。</td><td>36 个 pair 的意思是：6000 条样本集中复用了 36 组高相似 speaker pair。这样做的好处是压力集中、便于稳定比较模型差异；局限是它不能代表真实世界中所有 possible speaker pairs 的分布。</td></tr>
+        <tr><td>SIR 控制</td><td>v2: 0 / -3 dB；v3: 0 / -3 / -5 dB。</td><td>可以区分“speaker 相似性”与“干扰声更强”两类压力。-5 dB 更适合观察 tail failure，0 dB 更适合和 normal/easy 对齐。</td></tr>
+        <tr><td>SIR 缩放方式</td><td>SIR = 10 log10(P_target / P_interferer)。0 dB 表示两路功率相同；-3 dB 表示 interferer 功率约为 target 的 2 倍；-5 dB 表示 interferer 功率约为 target 的 3.16 倍。</td><td>三版数据的说话人 pair 和文本结构保持一致，主要改变干扰源相对 target 的能量强度。</td></tr>
+        <tr><td>enrollment 可靠性</td><td>enrollment_fallback_self = 0。</td><td>没有使用当前 target 自身作为 enrollment 的 fallback，避免 enrollment 泄漏让任务变简单。</td></tr>
+      </tbody></table>
+      <p><b>难度判断：</b>Similar Speaker v3 比 v2 更严格：它同时约束同性别、speaker embedding 相似、utterance-level 声学距离和 SIR，并且避免 self-enrollment fallback。传统指标显示，强预训练 USEF 在 v3 上仍能保持较高输出质量，这说明强模型对当前 speaker-side stress 很稳；但对 BSRNN 18epoch / TFMap / Context 来说，v3 明显放大了 tail failure 与 speaker drift。</p>
+      <p><b>“36 个 pair 的 stress test”是什么意思：</b>这不是说数据量只有 36 条，而是说 6000 条 utterance-level tasks 来自 36 组高相似 speaker pair 的重复采样。它适合回答“当说话人确实被挑得很相似时，模型是否更容易局部 drift”；但不适合回答“真实世界所有说话人组合上的平均风险是多少”。因此汇报时应把它称为 targeted stress test，而不是 population-level benchmark。</p>
+    </section>
+
+    <section>
+      <h2>指标体系</h2>
+      <table><thead><tr><th>指标</th><th>计算方式</th><th>回答的问题</th><th>汇报用途</th></tr></thead><tbody>
+        <tr><td>SI-SNRi</td><td><code>SI-SNR(output,target_clean) - SI-SNR(mixture,target_clean)</code>。</td><td>整条语音相对 mixture baseline 的分离改善是多少？</td><td>传统全局 improvement 指标，必须保留。</td></tr>
+        <tr><td>Output SI-SNR / SI-SDR</td><td>直接计算 <code>SI-SNR(output,target_clean)</code> 或 <code>SI-SDR(output,target_clean)</code>，不减 mixture baseline。</td><td>模型输出本身离 target 有多近？</td><td>用于补充 SI-SNRi。hard mixture 本身更差时，SI-SNRi 可能偏高，因此需要同时报告绝对质量。</td></tr>
+        <tr><td>Mixture SI-SNR / SI-SDR Baseline</td><td>计算 <code>SI-SNR(mixture,target_clean)</code> 或 <code>SI-SDR(mixture,target_clean)</code>。</td><td>这个样本本身有多难？</td><td>解释为什么 hard condition 中 SI-SNRi 可能更高：baseline 更差会抬高 improvement。</td></tr>
+        <tr><td>SDR / SIR / SAR</td><td>BSS Eval 系列指标。SDR 衡量整体失真，SIR 更关注干扰抑制，SAR 更关注伪影。</td><td>输出质量下降主要来自残留干扰还是伪影？</td><td>可作为传统分离指标补充，但对 permutation / target attribution 的解释仍有限。</td></tr>
+        <tr><td>PESQ / STOI / ESTOI</td><td>PESQ 近似语音质量，STOI / ESTOI 近似可懂度。</td><td>人耳可感知质量和 intelligibility 是否改善？</td><td>适合作为导师汇报中的补充指标，尤其在 SI-SNRi 差异不明显时提供另一种视角。</td></tr>
+        <tr><td>ASR WER / CER</td><td>对 output 跑 ASR，与 target transcript 比较 WER / CER。</td><td>内容是否被听懂、是否说错词？</td><td>对 similar-content 和 case study 很有价值；但 synthetic / target-like text 条件下要结合 speaker 与 waveform evidence 解释。</td></tr>
+        <tr><td>Speaker Similarity</td><td>用 ECAPA / x-vector 等 speaker embedding 计算 output 到 target / interferer prototype 的 cosine similarity。</td><td>输出说话人更像 target 还是 interferer？</td><td>适合 speaker-side sanity 和 local diagnostic，但不能单独替代 waveform 指标。</td></tr>
+        <tr><td>Target-Interferer SI-SDR Gap</td><td><code>SI-SDR(output,target_clean) - SI-SDR(output,interferer_clean)</code>，可在 utterance 或 1s chunk 上计算。</td><td>输出从波形角度更接近 target 还是 interferer？</td><td>作为 local mismatch 的 waveform confirmation。</td></tr>
+        <tr><td>Mismatch (1s)</td><td>1s chunk 中 verifier gap &lt; 0。speaker-side 用 speaker embedding，content-side 用 SSL content representation。</td><td>局部 verifier 是否更偏向 interferer？</td><td>局部风险信号。</td></tr>
+        <tr><td>Confirmed Drift (1s)</td><td>Mismatch 且 Target-Interferer SI-SDR Gap &lt; 0。</td><td>verifier 和 waveform 是否同时认为 output 更接近 interferer？</td><td>本报告最重要的局部强证据。</td></tr>
+        <tr><td>Any Confirmed Drift Case</td><td>一条 utterance 至少有一个 Confirmed Drift chunk。</td><td>多少样本被局部 drift 影响过？</td><td>比平均 chunk rate 更适合汇报后果。</td></tr>
+        <tr><td>Persistent Confirmed Drift Case</td><td>一条 utterance 中 Confirmed Drift chunk rate &gt; 0.2。</td><td>多少样本出现持续性 drift？</td><td>强调较严重、非偶发风险。</td></tr>
+      </tbody></table>
+      <div class="note">本研究建议把传统指标分成三类同时汇报：第一类是 improvement，例如 SI-SNRi / SDRi；第二类是绝对输出质量，例如 Output SI-SNR / SI-SDR、PESQ、STOI；第三类是 attribution reliability，例如 Target-Interferer SI-SDR Gap、Mismatch 和 Confirmed Drift。这样可以避免 hard dataset 中 “mixture baseline 更差导致 SI-SNRi 看起来更高” 的解释歧义。</div>
+    </section>
+
+    <section>
+      <h2>Clean-Source Verifier Sanity</h2>
+      <p>在分析模型输出前，需要证明 verifier 对 clean target / interferer 本身是可分的。这里的 sanity test 不评价 TSE 模型，只评价 verifier 是否有资格作为局部诊断工具。</p>
+      <table><thead><tr><th>Sanity test</th><th>计算方式</th><th>关键结果</th><th>结论</th></tr></thead><tbody>
+        <tr><td>speaker verifier sanity</td><td>对 clean target chunk 和 clean interferer chunk 计算其到 target / interferer speaker prototype 的 cosine gap；把来源是否为 target 作为二分类标签，扫阈值得到 ROC / AUC。</td><td>1s AUC 0.9998，accuracy 0.9944；2s AUC 0.99999，accuracy 0.9977。</td><td>即使 target/interferer speaker 相似，speaker verifier 在 clean source 上仍稳定。</td></tr>
+        <tr><td>content SSL sanity</td><td>对 aligned clean target/interferer chunk 提取 SSL representation，比较 clean chunk 到 target / interferer clean reference 的 content gap。</td><td>1000 samples / 10985 chunks；target / interferer clean-source accuracy = 1.000 / 1.000。</td><td>SSL content representation 在 clean source 上没有 collapse，可用于 content mismatch 诊断。</td></tr>
+      </tbody></table>
+    </section>
+  </main>
+</body>
+</html>
+
+
+
+
